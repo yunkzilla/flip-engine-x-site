@@ -1,7 +1,4 @@
 /* eslint-disable @next/next/no-img-element */
-"use client";
-
-import { useEffect, useState } from "react";
 
 /* ── Real theme tokens (from lib/uiTheme.ts) ── */
 const t = {
@@ -473,49 +470,13 @@ function SettingsMock() {
 }
 
 /* ════════════════════════════════════════
-   SCREEN DEFINITIONS
-   ════════════════════════════════════════ */
-type ScreenKey = "scanner" | "batch" | "inventory" | "settings";
-
-const screens: { key: ScreenKey; label: string; color: string; glow: string }[] = [
-  { key: "scanner", label: "Scanner", color: "#22D3EE", glow: "glow-cyan" },
-  { key: "batch", label: "Batch", color: "#00ff80", glow: "glow-green" },
-  { key: "inventory", label: "Inventory", color: "#C4B5FD", glow: "glow-violet" },
-  { key: "settings", label: "Settings", color: "#FDE047", glow: "glow-yellow" },
-];
-
-const screenComponents: Record<ScreenKey, () => React.JSX.Element> = {
-  scanner: ScannerMock,
-  batch: BatchMock,
-  inventory: InventoryMock,
-  settings: SettingsMock,
-};
-
-/* ════════════════════════════════════════
    MAIN DEMO SECTION
    ════════════════════════════════════════ */
 export default function AppDemo() {
-  const [activeIdx, setActiveIdx] = useState(0);
-  const [paused, setPaused] = useState(false);
-
-  // Auto-cycle every 5 seconds
-  useEffect(() => {
-    if (paused) return;
-    const timer = setInterval(() => {
-      setActiveIdx(i => (i + 1) % screens.length);
-    }, 5000);
-    return () => clearInterval(timer);
-  }, [paused]);
-
-  const leftIdx = activeIdx;
-  const rightIdx = (activeIdx + 1) % screens.length;
-  const LeftComponent = screenComponents[screens[leftIdx].key];
-  const RightComponent = screenComponents[screens[rightIdx].key];
-
   return (
     <section id="demo" className="parallax-section py-24 sm:py-32 px-6">
       <div className="max-w-6xl mx-auto">
-        <div className="text-center mb-12" data-animate>
+        <div className="text-center mb-16" data-animate>
           <div className="font-pixel text-[9px] text-[#8B5CF6] glow-violet tracking-widest mb-4">SEE IT IN ACTION</div>
           <h2 className="text-3xl sm:text-5xl font-black text-[#F1F0FF] mb-4">
             Built for the <span className="text-[#FDE047]">Source</span>
@@ -525,66 +486,8 @@ export default function AppDemo() {
           </p>
         </div>
 
-        {/* Screen selector tabs */}
-        <div className="flex justify-center gap-3 mb-10 flex-wrap" data-animate>
-          {screens.map((s, i) => {
-            const isActive = i === leftIdx || i === rightIdx;
-            return (
-              <button
-                key={s.key}
-                onClick={() => { setActiveIdx(i); setPaused(true); setTimeout(() => setPaused(false), 15000); }}
-                className="font-pixel transition-all duration-300"
-                style={{
-                  fontSize: 9,
-                  padding: "10px 18px",
-                  borderRadius: t.rPill,
-                  border: `1px solid ${isActive ? s.color : t.cardBorder}`,
-                  background: isActive ? `${s.color}15` : "rgba(255,255,255,0.03)",
-                  color: isActive ? s.color : t.textSoft,
-                  letterSpacing: "0.08em",
-                  cursor: "pointer",
-                  boxShadow: isActive ? `0 0 16px ${s.color}30` : "none",
-                }}
-              >
-                {s.label.toUpperCase()}
-              </button>
-            );
-          })}
-        </div>
-
-        {/* Phone pair */}
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-12 items-start">
-          <div data-animate className="opacity-0" key={screens[leftIdx].key}>
-            <div className="text-center mb-5">
-              <span className="font-pixel text-[9px] tracking-widest" style={{ color: screens[leftIdx].color }}>{screens[leftIdx].label.toUpperCase()}</span>
-            </div>
-            <LeftComponent />
-          </div>
-          <div data-animate className="opacity-0" style={{ animationDelay: "0.2s" }} key={screens[rightIdx].key}>
-            <div className="text-center mb-5">
-              <span className="font-pixel text-[9px] tracking-widest" style={{ color: screens[rightIdx].color }}>{screens[rightIdx].label.toUpperCase()}</span>
-            </div>
-            <RightComponent />
-          </div>
-        </div>
-
-        {/* Progress dots */}
-        <div className="flex justify-center gap-2 mt-10">
-          {screens.map((s, i) => (
-            <button
-              key={s.key}
-              onClick={() => { setActiveIdx(i); setPaused(true); setTimeout(() => setPaused(false), 15000); }}
-              className="transition-all duration-300"
-              style={{
-                width: i === leftIdx ? 24 : 8,
-                height: 8,
-                borderRadius: 4,
-                background: i === leftIdx ? s.color : i === rightIdx ? `${s.color}60` : "rgba(255,255,255,0.12)",
-                border: "none",
-                cursor: "pointer",
-              }}
-            />
-          ))}
+        <div className="flex justify-center" data-animate>
+          <ScannerMock />
         </div>
       </div>
     </section>
