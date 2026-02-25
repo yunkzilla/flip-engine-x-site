@@ -1,7 +1,3 @@
-"use client";
-
-import { useState } from "react";
-
 /* ── Scanner Mock ── */
 function ScannerMock() {
   return (
@@ -229,12 +225,10 @@ function InventoryMock() {
 
 /* ── Main Demo Section ── */
 export default function AppDemo() {
-  const [view, setView] = useState<"scanner" | "inventory">("scanner");
-
   return (
     <section id="demo" className="parallax-section py-24 sm:py-32 px-6">
-      <div className="max-w-5xl mx-auto">
-        <div className="text-center mb-12" data-animate>
+      <div className="max-w-6xl mx-auto">
+        <div className="text-center mb-16" data-animate>
           <div className="font-pixel text-[9px] text-[#8B5CF6] glow-violet tracking-widest mb-4">SEE IT IN ACTION</div>
           <h2 className="text-3xl sm:text-5xl font-black text-[#F1F0FF] mb-4">
             Built for the <span className="text-[#FDE047]">Source</span>
@@ -244,54 +238,19 @@ export default function AppDemo() {
           </p>
         </div>
 
-        {/* Toggle */}
-        <div className="flex justify-center gap-3 mb-10" data-animate>
-          <button
-            onClick={() => setView("scanner")}
-            className={`px-5 py-2.5 rounded-full text-xs font-bold transition-all ${
-              view === "scanner"
-                ? "bg-[rgba(139,92,246,0.15)] border border-[rgba(139,92,246,0.5)] text-[#C4B5FD] shadow-[0_0_16px_rgba(139,92,246,0.3)]"
-                : "bg-[rgba(255,255,255,0.03)] border border-[rgba(139,92,246,0.1)] text-[rgba(241,240,255,0.4)]"
-            }`}
-          >
-            Scanner
-          </button>
-          <button
-            onClick={() => setView("inventory")}
-            className={`px-5 py-2.5 rounded-full text-xs font-bold transition-all ${
-              view === "inventory"
-                ? "bg-[rgba(139,92,246,0.15)] border border-[rgba(139,92,246,0.5)] text-[#C4B5FD] shadow-[0_0_16px_rgba(139,92,246,0.3)]"
-                : "bg-[rgba(255,255,255,0.03)] border border-[rgba(139,92,246,0.1)] text-[rgba(241,240,255,0.4)]"
-            }`}
-          >
-            Inventory
-          </button>
-        </div>
-
-        {/* Mock + description side by side */}
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
-          <div data-animate className="opacity-0 flex justify-center">
-            {view === "scanner" ? <ScannerMock /> : <InventoryMock />}
-          </div>
-
+        {/* Both phones side by side */}
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-12 items-start">
           <div data-animate className="opacity-0">
-            {view === "scanner" ? (
-              <div className="space-y-6">
-                <Feature icon="camera" color="#8B5CF6" title="Point & Scan" desc="Open the camera, point at any barcode. ISBN, UPC, EAN — detected in milliseconds using the native BarcodeDetector API." />
-                <Feature icon="chart" color="#22D3EE" title="Instant Keepa Data" desc="Sales rank, pricing history, sold-per-month, and product images load automatically. No extra taps needed." />
-                <Feature icon="dollar" color="#00ff80" title="Live Profit Math" desc="Buy cost, sale price, FBA fees, referral fees, weight-based shipping — all calculated in real time as you scan." />
-                <Feature icon="bell" color="#FDE047" title="Trigger Alerts" desc="Custom sound effects and color-coded alerts fire based on your rules. Know BUY or PASS before you even look at the screen." />
-                <Feature icon="shield" color="#f87171" title="Gating Check" desc="Instantly see if you're ungated. One tap to request approval directly on Seller Central." />
-              </div>
-            ) : (
-              <div className="space-y-6">
-                <Feature icon="box" color="#8B5CF6" title="Amazon Sync" desc="Pull your full FBA and FBM inventory from Amazon via SP-API. SKUs, ASINs, quantities, and live prices — all in one place." />
-                <Feature icon="dollar" color="#00ff80" title="Profit Tracking" desc="See estimated profit per item and across your entire inventory. Track what's selling and what's sitting." />
-                <Feature icon="tag" color="#22D3EE" title="Price Management" desc="Update listing prices directly from the app. Match market prices or set custom amounts with one tap." />
-                <Feature icon="chart" color="#FDE047" title="Sales Analytics" desc="Units sold, page views, buy box percentage, and financial actuals — pulled directly from your Seller Central data." />
-                <Feature icon="filter" color="#C4B5FD" title="Smart Filters" desc="Filter by FBA, FBM, sold-out, or active. Search by title, SKU, or ASIN. Find any item instantly." />
-              </div>
-            )}
+            <div className="text-center mb-5">
+              <span className="font-pixel text-[9px] text-[#22D3EE] glow-cyan tracking-widest">SCANNER</span>
+            </div>
+            <ScannerMock />
+          </div>
+          <div data-animate className="opacity-0" style={{ animationDelay: "0.2s" }}>
+            <div className="text-center mb-5">
+              <span className="font-pixel text-[9px] text-[#C4B5FD] glow-violet tracking-widest">INVENTORY</span>
+            </div>
+            <InventoryMock />
           </div>
         </div>
       </div>
@@ -299,29 +258,3 @@ export default function AppDemo() {
   );
 }
 
-function Feature({ icon, color, title, desc }: { icon: string; color: string; title: string; desc: string }) {
-  const icons: Record<string, React.ReactNode> = {
-    camera: <path d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"/>,
-    chart: <><path d="M3 3v18h18"/><path d="m18.7 8-5.1 5.2-2.8-2.7L7 14.3"/></>,
-    dollar: <><line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/></>,
-    bell: <><path d="M6 8a6 6 0 0 1 12 0c0 7 3 9 3 9H3s3-2 3-9"/><path d="M10.3 21a1.94 1.94 0 0 0 3.4 0"/></>,
-    shield: <><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></>,
-    box: <><path d="M21 8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16Z"/><path d="m3.3 7 8.7 5 8.7-5"/><path d="M12 22V12"/></>,
-    tag: <><path d="M20.59 13.41l-7.17 7.17a2 2 0 0 1-2.83 0L2 12V2h10l8.59 8.59a2 2 0 0 1 0 2.82z"/><circle cx="7" cy="7" r="1"/></>,
-    filter: <><polygon points="22 3 2 3 10 12.46 10 19 14 21 14 12.46 22 3"/></>,
-  };
-
-  return (
-    <div className="flex gap-4">
-      <div className="w-10 h-10 rounded-xl flex items-center justify-center shrink-0" style={{ background: `${color}10`, border: `1px solid ${color}25` }}>
-        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke={color} strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-          {icons[icon]}
-        </svg>
-      </div>
-      <div>
-        <h4 className="text-sm font-black text-[#F1F0FF] mb-1">{title}</h4>
-        <p className="text-xs text-[rgba(241,240,255,0.45)] leading-relaxed">{desc}</p>
-      </div>
-    </div>
-  );
-}
