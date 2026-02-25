@@ -1,3 +1,4 @@
+/* eslint-disable @next/next/no-img-element */
 /* ── Flip Engine X – App Demo Section ──
    Phone mockups skinned with the real app's exact theme tokens & styling */
 
@@ -299,9 +300,16 @@ function ScannerMock() {
                   alignItems: "center",
                   justifyContent: "center",
                   boxShadow: "3px 4px 14px rgba(0,0,0,0.5), inset -2px 0 6px rgba(0,0,0,0.3)",
+                  position: "relative",
                 }}
               >
-                <span style={{ fontSize: 14, color: t.textFaint, fontWeight: 900 }}>P</span>
+                <span style={{ fontSize: 14, color: t.textFaint, fontWeight: 900, position: "absolute", userSelect: "none" }}>P</span>
+                <img
+                  src="https://images-na.ssl-images-amazon.com/images/P/0135957052.01._SL160_.jpg"
+                  alt=""
+                  style={{ width: "100%", height: "100%", objectFit: "cover", position: "relative", zIndex: 1 }}
+                  onError={e => { e.currentTarget.style.display = "none"; }}
+                />
               </div>
               <div style={{ minWidth: 0, flex: 1 }}>
                 <div style={{ fontSize: 9, color: t.textFaint, fontWeight: 700 }}>978-0134685991</div>
@@ -521,11 +529,11 @@ function ScannerMock() {
 
 /* ── Inventory Mock ── */
 const inventoryItems = [
-  { title: "The Pragmatic Programmer", asin: "B07VRS84D1", sku: "FEX-001", stock: 3, price: 24.99, cost: 3.50, fees: 7.22, rank: 4231, letter: "P" },
-  { title: "Clean Code: A Handbook of Agile Software...", asin: "B001GSTOAM", sku: "FEX-002", stock: 1, price: 19.50, cost: 2.00, fees: 5.80, rank: 2847, letter: "C" },
-  { title: "Design Patterns: Elements of Reusable...", asin: "B000SEIBB8", sku: "FEX-003", stock: 2, price: 31.00, cost: 4.25, fees: 8.10, rank: 8102, letter: "D" },
-  { title: "Refactoring: Improving the Design of...", asin: "B07LCM8RG2", sku: "FEX-004", stock: 0, price: 22.75, cost: 1.50, fees: 6.40, rank: 5480, letter: "R", sold: true },
-  { title: "Introduction to Algorithms", asin: "B08FH8N996", sku: "FEX-005", stock: 1, price: 42.00, cost: 5.00, fees: 10.30, rank: 1203, letter: "I" },
+  { title: "The Pragmatic Programmer", asin: "B07VRS84D1", isbn10: "0135957052", sku: "FEX-001", stock: 3, price: 24.99, cost: 3.50, fees: 7.22, rank: 4231, letter: "P" },
+  { title: "Clean Code: A Handbook of Agile Software...", asin: "B001GSTOAM", isbn10: "0132350882", sku: "FEX-002", stock: 1, price: 19.50, cost: 2.00, fees: 5.80, rank: 2847, letter: "C" },
+  { title: "Design Patterns: Elements of Reusable...", asin: "B000SEIBB8", isbn10: "0201633612", sku: "FEX-003", stock: 2, price: 31.00, cost: 4.25, fees: 8.10, rank: 8102, letter: "D" },
+  { title: "Refactoring: Improving the Design of...", asin: "B07LCM8RG2", isbn10: "0134757599", sku: "FEX-004", stock: 0, price: 22.75, cost: 1.50, fees: 6.40, rank: 5480, letter: "R", sold: true },
+  { title: "Introduction to Algorithms", asin: "B08FH8N996", isbn10: "026204630X", sku: "FEX-005", stock: 1, price: 42.00, cost: 5.00, fees: 10.30, rank: 1203, letter: "I" },
 ];
 
 function InventoryMock() {
@@ -692,7 +700,7 @@ function InventoryMock() {
                   <div style={isSold ? { opacity: 0.28 } : undefined}>
                     {/* Item header (real: ui.itemHeader) */}
                     <div style={{ display: "flex", gap: 8, alignItems: "flex-start" }}>
-                      {/* Book cover */}
+                      {/* Book cover (real pattern: letter fallback + img with onError) */}
                       <div
                         style={{
                           width: 32,
@@ -706,9 +714,16 @@ function InventoryMock() {
                           alignItems: "center",
                           justifyContent: "center",
                           boxShadow: "3px 4px 14px rgba(0,0,0,0.5), inset -2px 0 6px rgba(0,0,0,0.3)",
+                          position: "relative",
                         }}
                       >
-                        <span style={{ fontSize: 14, color: t.textFaint, fontWeight: 900 }}>{item.letter}</span>
+                        <span style={{ fontSize: 14, color: t.textFaint, fontWeight: 900, position: "absolute", userSelect: "none" }}>{item.letter}</span>
+                        <img
+                          src={`https://images-na.ssl-images-amazon.com/images/P/${item.isbn10}.01._SL160_.jpg`}
+                          alt=""
+                          style={{ width: "100%", height: "100%", objectFit: "cover", position: "relative", zIndex: 1 }}
+                          onError={e => { e.currentTarget.style.display = "none"; }}
+                        />
                       </div>
                       <div style={{ flex: 1, minWidth: 0 }}>
                         <div
