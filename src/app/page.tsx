@@ -5,6 +5,7 @@ import Hero from "@/components/Hero";
 import Features from "@/components/Features";
 import HowItWorks from "@/components/HowItWorks";
 import Pricing from "@/components/Pricing";
+import AppDemo from "@/components/AppDemo";
 import Cta from "@/components/Cta";
 import Nav from "@/components/Nav";
 import Footer from "@/components/Footer";
@@ -37,6 +38,7 @@ export default function Page() {
       <Nav />
       <div ref={sectionsRef}>
         <Hero />
+        <AppDemo />
         <Features />
         <HowItWorks />
         <Pricing />

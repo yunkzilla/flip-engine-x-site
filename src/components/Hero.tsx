@@ -3,20 +3,21 @@ export default function Hero() {
     <section className="parallax-section min-h-screen flex flex-col items-center justify-center text-center px-6 pt-20">
       <div data-animate className="opacity-0">
         <div className="font-pixel text-[10px] sm:text-xs text-[#22D3EE] glow-cyan tracking-widest mb-6 breathe">
-          SCAN. FLIP. STACK.
+          BUILT BY FLIPPERS. USED BY FLIPPERS.
         </div>
 
         <h1 className="text-4xl sm:text-6xl lg:text-7xl font-black leading-tight mb-6">
-          <span className="text-[#F1F0FF]">The Fastest</span>
+          <span className="text-[#F1F0FF]">The Swiss Army Knife</span>
           <br />
-          <span className="text-[#8B5CF6] glow-violet">FBA Scanner</span>
+          <span className="text-[#F1F0FF]">for </span>
+          <span className="text-[#8B5CF6] glow-violet">FBA Book</span>
           <br />
-          <span className="text-[#F1F0FF]">Ever Built</span>
+          <span className="text-[#FDE047] glow-yellow">Flipping</span>
         </h1>
 
         <p className="max-w-xl mx-auto text-lg sm:text-xl text-[rgba(241,240,255,0.55)] mb-10 leading-relaxed">
-          Camera barcode scanning, instant Keepa lookups, real-time profit calculations,
-          and smart batch management — all in one lightning-fast PWA.
+          Scan barcodes, pull Keepa data, calculate profit, check gating,
+          and batch your inventory — all from one app built by resellers who actually flip books.
         </p>
 
         <div className="flex flex-col sm:flex-row gap-4 justify-center items-center">
@@ -26,35 +27,9 @@ export default function Hero() {
               <path d="M5 12h14" /><path d="m12 5 7 7-7 7" />
             </svg>
           </a>
-          <a href="#features" className="cta-btn cta-btn-primary">
-            See Features
+          <a href="#demo" className="cta-btn cta-btn-primary">
+            See It In Action
           </a>
-        </div>
-      </div>
-
-      {/* Floating mockup hint */}
-      <div className="mt-16 float" data-animate style={{ animationDelay: "0.3s" }}>
-        <div className="glass-card p-6 max-w-sm mx-auto">
-          <div className="flex items-center gap-3 mb-3">
-            <div className="w-3 h-3 rounded-full bg-[#00ff80]" style={{ boxShadow: "0 0 8px rgba(0,255,128,0.6)" }} />
-            <span className="font-pixel text-[8px] text-[#FDE047]">SCAN RESULT</span>
-          </div>
-          <div className="text-sm text-[rgba(241,240,255,0.55)] mb-1">ISBN 978-0-13-468599-1</div>
-          <div className="text-lg font-black text-[#F1F0FF]">The Pragmatic Programmer</div>
-          <div className="flex gap-4 mt-3">
-            <div>
-              <div className="text-[10px] text-[rgba(241,240,255,0.4)] font-bold">BUY</div>
-              <div className="text-[#22D3EE] font-black">$3.50</div>
-            </div>
-            <div>
-              <div className="text-[10px] text-[rgba(241,240,255,0.4)] font-bold">SELL</div>
-              <div className="text-[#C4B5FD] font-black">$24.99</div>
-            </div>
-            <div>
-              <div className="text-[10px] text-[rgba(241,240,255,0.4)] font-bold">PROFIT</div>
-              <div className="text-[#00ff80] font-black glow-green">$14.27</div>
-            </div>
-          </div>
         </div>
       </div>
 
