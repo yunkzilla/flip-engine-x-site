@@ -1,9 +1,12 @@
+/* ── Shared phone frame height ── */
+const PHONE_HEIGHT = 720;
+
 /* ── Scanner Mock ── */
 function ScannerMock() {
   return (
     <div className="w-full max-w-[340px] mx-auto">
       {/* Phone frame */}
-      <div className="rounded-[32px] border border-[rgba(139,92,246,0.25)] bg-[#06050F] p-3 shadow-2xl" style={{ boxShadow: "0 0 60px rgba(139,92,246,0.15), 0 25px 50px rgba(0,0,0,0.5)" }}>
+      <div className="rounded-[32px] border border-[rgba(139,92,246,0.25)] bg-[#06050F] p-3 shadow-2xl overflow-hidden" style={{ boxShadow: "0 0 60px rgba(139,92,246,0.15), 0 25px 50px rgba(0,0,0,0.5)", height: PHONE_HEIGHT }}>
         {/* Status bar */}
         <div className="flex items-center justify-between px-4 py-2 text-[10px] text-[rgba(241,240,255,0.4)] font-semibold">
           <span>9:41</span>
@@ -144,7 +147,7 @@ const inventoryItems = [
 function InventoryMock() {
   return (
     <div className="w-full max-w-[340px] mx-auto">
-      <div className="rounded-[32px] border border-[rgba(139,92,246,0.25)] bg-[#06050F] p-3 shadow-2xl" style={{ boxShadow: "0 0 60px rgba(139,92,246,0.15), 0 25px 50px rgba(0,0,0,0.5)" }}>
+      <div className="rounded-[32px] border border-[rgba(139,92,246,0.25)] bg-[#06050F] p-3 shadow-2xl overflow-hidden" style={{ boxShadow: "0 0 60px rgba(139,92,246,0.15), 0 25px 50px rgba(0,0,0,0.5)", height: PHONE_HEIGHT }}>
         {/* Status bar */}
         <div className="flex items-center justify-between px-4 py-2 text-[10px] text-[rgba(241,240,255,0.4)] font-semibold">
           <span>9:41</span>
