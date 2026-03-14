@@ -6,8 +6,9 @@ export default function Footer() {
           <img src="/icon.svg" alt="Flip Engine X" className="w-5 h-5" />
           <span className="font-pixel text-[8px] text-[#FDE047] tracking-wider">FLIP ENGINE X</span>
         </div>
-        <div className="text-xs text-[rgba(241,240,255,0.3)] font-semibold">
-          &copy; {new Date().getFullYear()} Flip Engine X. All rights reserved.
+        <div className="text-xs text-[rgba(241,240,255,0.3)] font-semibold text-center">
+          <div>&copy; {new Date().getFullYear()} Flip Engine X. All rights reserved.</div>
+          <div className="mt-1 text-[10px] text-[rgba(241,240,255,0.2)]">A <span className="text-[rgba(241,240,255,0.35)]">Big Pal Energy LLC</span> creation</div>
         </div>
         <div className="flex gap-6 text-xs text-[rgba(241,240,255,0.35)] font-semibold">
           <a href="/terms" className="hover:text-[#C4B5FD] transition-colors">Terms</a>

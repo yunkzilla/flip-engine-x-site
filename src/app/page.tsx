@@ -6,6 +6,7 @@ import Features from "@/components/Features";
 import HowItWorks from "@/components/HowItWorks";
 import Pricing from "@/components/Pricing";
 import AppDemo from "@/components/AppDemo";
+import SpeedCompare from "@/components/SpeedCompare";
 import Cta from "@/components/Cta";
 import Nav from "@/components/Nav";
 import Footer from "@/components/Footer";
@@ -40,6 +41,7 @@ export default function Page() {
         <Hero />
         <AppDemo />
         <Features />
+        <SpeedCompare />
         <HowItWorks />
         <Pricing />
         <Cta />
