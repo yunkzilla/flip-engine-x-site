@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 
-const APP_URL = "https://semirebelliously-nonanguished-ciera.ngrok-free.dev";
+const APP_URL = "https://flip-engine-x.vercel.app";
 
 const plans = [
   {
