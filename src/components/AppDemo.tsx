@@ -1,4 +1,8 @@
+"use client";
+
 /* eslint-disable @next/next/no-img-element */
+
+import { useState } from "react";
 
 /* ── Real theme tokens (from lib/uiTheme.ts) ── */
 const t = {
@@ -473,10 +477,19 @@ function SettingsMock() {
    MAIN DEMO SECTION
    ════════════════════════════════════════ */
 export default function AppDemo() {
+  const screens = [
+    { key: "scanner", label: "Scanner", component: <ScannerMock />, color: "#8B5CF6" },
+    { key: "batch", label: "Batches", component: <BatchMock />, color: "#00ff80", tier: "Pro+" },
+    { key: "inventory", label: "Inventory", component: <InventoryMock />, color: "#22D3EE", tier: "Pro+" },
+    { key: "settings", label: "Settings", component: <SettingsMock />, color: "#FDE047" },
+  ];
+
+  const [active, setActive] = useState(0);
+
   return (
-    <section id="demo" className="parallax-section py-24 sm:py-32 px-6">
+    <section id="demo" className="parallax-section py-16 sm:py-24 px-6">
       <div className="max-w-6xl mx-auto">
-        <div className="text-center mb-16" data-animate>
+        <div className="text-center mb-12" data-animate>
           <div className="font-pixel text-[9px] text-[#8B5CF6] glow-violet tracking-widest mb-4">SEE IT IN ACTION</div>
           <h2 className="text-3xl sm:text-5xl font-black text-[#F1F0FF] mb-4">
             Built for the <span className="text-[#FDE047]">Source</span>
@@ -486,8 +499,32 @@ export default function AppDemo() {
           </p>
         </div>
 
+        {/* Screen tabs */}
+        <div className="flex justify-center gap-2 sm:gap-3 mb-10" data-animate>
+          {screens.map((s, i) => (
+            <button
+              key={s.key}
+              onClick={() => setActive(i)}
+              className="font-pixel text-[8px] sm:text-[9px] px-3 sm:px-5 py-2 rounded-full transition-all flex items-center gap-1.5"
+              style={{
+                background: active === i ? `${s.color}20` : "rgba(255,255,255,0.04)",
+                border: `1px solid ${active === i ? `${s.color}60` : "rgba(255,255,255,0.08)"}`,
+                color: active === i ? s.color : "rgba(241,240,255,0.4)",
+                boxShadow: active === i ? `0 0 16px ${s.color}25` : "none",
+              }}
+            >
+              {s.label.toUpperCase()}
+              {s.tier && (
+                <span className="text-[6px] px-1.5 py-0.5 rounded-full" style={{ background: "rgba(139,92,246,0.15)", border: "1px solid rgba(139,92,246,0.35)", color: "#C4B5FD" }}>
+                  {s.tier}
+                </span>
+              )}
+            </button>
+          ))}
+        </div>
+
         <div className="flex justify-center" data-animate>
-          <ScannerMock />
+          {screens[active].component}
         </div>
       </div>
     </section>

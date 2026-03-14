@@ -91,7 +91,7 @@ export default function Pricing() {
   const [annual, setAnnual] = useState(false);
 
   return (
-    <section id="pricing" className="parallax-section py-24 sm:py-32 px-6">
+    <section id="pricing" className="parallax-section py-16 sm:py-24 px-6">
       <div className="max-w-6xl mx-auto">
         <div className="text-center mb-12" data-animate>
           <div className="font-pixel text-[9px] text-[#00ff80] glow-green tracking-widest mb-4">PRICING</div>

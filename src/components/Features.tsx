@@ -9,6 +9,7 @@ const features = [
     title: "Camera Scanner",
     desc: "Point your phone at any barcode. Instant detection using the native BarcodeDetector API — no lag, no app store download.",
     color: "#8B5CF6",
+    tier: null,
   },
   {
     icon: (
@@ -19,6 +20,7 @@ const features = [
     title: "Keepa Lookups",
     desc: "Every scan fires a Keepa lookup. Get sales rank, pricing history, sold-per-month data, and product images in under a second.",
     color: "#22D3EE",
+    tier: null,
   },
   {
     icon: (
@@ -29,6 +31,7 @@ const features = [
     title: "Profit Calculator",
     desc: "Real-time profit with FBA/FBM fees, referral fees, weight-based shipping, and customizable cost settings. Know your margin before you buy.",
     color: "#00ff80",
+    tier: null,
   },
   {
     icon: (
@@ -37,8 +40,9 @@ const features = [
       </svg>
     ),
     title: "Smart Triggers",
-    desc: "Set up to 20 trigger parameters with color alerts, sound effects, and auto-keep rules. Customize every scan decision.",
+    desc: "Up to 20 trigger parameters with color alerts, sound effects, and auto-keep rules. Starter includes 3 — Pro and above unlocks all 20.",
     color: "#FDE047",
+    tier: "Pro+",
   },
   {
     icon: (
@@ -50,6 +54,7 @@ const features = [
     title: "Batch Management",
     desc: "Create FBA or FBM batches, assign scanned items, set shipping locations, and manage your entire workflow from one screen.",
     color: "#C4B5FD",
+    tier: "Pro+",
   },
   {
     icon: (
@@ -60,12 +65,46 @@ const features = [
     title: "Gating Checks",
     desc: "Instantly know if you're ungated or gated on any ASIN. One-tap approval requests directly to Seller Central.",
     color: "#f87171",
+    tier: "Pro+",
+  },
+  {
+    icon: (
+      <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#22D3EE" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+        <path d="M4 15s1-1 4-1 5 2 8 2 4-1 4-1V3s-1 1-4 1-5-2-8-2-4 1-4 1z"/><line x1="4" y1="22" x2="4" y2="15"/>
+      </svg>
+    ),
+    title: "SP-API Integration",
+    desc: "Connect your Seller Central account for real-time inventory sync, competitive pricing data, and sales analytics.",
+    color: "#22D3EE",
+    tier: "Pro+",
+  },
+  {
+    icon: (
+      <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#00ff80" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+        <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
+      </svg>
+    ),
+    title: "PWA — No App Store",
+    desc: "Install directly from your browser. Works offline, syncs across devices, and updates instantly — no app store listing needed.",
+    color: "#00ff80",
+    tier: null,
+  },
+  {
+    icon: (
+      <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#FDE047" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+        <path d="M12 20h9"/><path d="M16.5 3.5a2.12 2.12 0 0 1 3 3L7 19l-4 1 1-4Z"/>
+      </svg>
+    ),
+    title: "Personal Records",
+    desc: "Track your best finds, rank milestones, and scanning history. Cloud-synced so your stats follow you everywhere.",
+    color: "#FDE047",
+    tier: null,
   },
 ];
 
 export default function Features() {
   return (
-    <section id="features" className="parallax-section py-24 sm:py-32 px-6">
+    <section id="features" className="parallax-section py-16 sm:py-24 px-6">
       <div className="max-w-6xl mx-auto">
         <div className="text-center mb-16" data-animate>
           <div className="font-pixel text-[9px] text-[#22D3EE] glow-cyan tracking-widest mb-4">FEATURES</div>
@@ -91,9 +130,16 @@ export default function Features() {
               >
                 {f.icon}
               </div>
-              <h3 className="font-pixel text-[10px] mb-3" style={{ color: f.color }}>
-                {f.title.toUpperCase()}
-              </h3>
+              <div className="flex items-center gap-2 mb-3">
+                <h3 className="font-pixel text-[10px]" style={{ color: f.color }}>
+                  {f.title.toUpperCase()}
+                </h3>
+                {f.tier && (
+                  <span className="font-pixel text-[7px] px-2 py-0.5 rounded-full" style={{ background: "rgba(139,92,246,0.15)", border: "1px solid rgba(139,92,246,0.35)", color: "#C4B5FD" }}>
+                    {f.tier}
+                  </span>
+                )}
+              </div>
               <p className="text-sm text-[rgba(241,240,255,0.55)] leading-relaxed">{f.desc}</p>
             </div>
           ))}

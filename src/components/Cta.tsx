@@ -1,6 +1,6 @@
 export default function Cta() {
   return (
-    <section className="parallax-section py-24 sm:py-32 px-6">
+    <section className="parallax-section py-16 sm:py-24 px-6">
       <div className="max-w-3xl mx-auto text-center" data-animate>
         <div className="glass-card laser-border rounded-3xl p-10 sm:p-16">
           <div className="font-pixel text-[9px] text-[#22D3EE] glow-cyan tracking-widest mb-6 breathe">

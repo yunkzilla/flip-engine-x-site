@@ -31,7 +31,7 @@ const steps = [
 
 export default function HowItWorks() {
   return (
-    <section id="how-it-works" className="parallax-section py-24 sm:py-32 px-6">
+    <section id="how-it-works" className="parallax-section py-16 sm:py-24 px-6">
       <div className="max-w-5xl mx-auto">
         <div className="text-center mb-16" data-animate>
           <div className="font-pixel text-[9px] text-[#FDE047] glow-yellow tracking-widest mb-4">HOW IT WORKS</div>

@@ -21,8 +21,9 @@ export default function Nav() {
       }}
     >
       <div className="max-w-6xl mx-auto px-6 h-16 flex items-center justify-between">
-        <a href="#" className="font-pixel text-[10px] text-[#FDE047] glow-yellow tracking-wider">
-          FLIP ENGINE X
+        <a href="#" className="flex items-center gap-2">
+          <img src="/icon.svg" alt="Flip Engine X" className="w-7 h-7" />
+          <span className="font-pixel text-[10px] text-[#FDE047] glow-yellow tracking-wider">FLIP ENGINE X</span>
         </a>
         <div className="hidden sm:flex items-center gap-8 text-sm font-semibold">
           <a href="#features" className="text-[rgba(241,240,255,0.55)] hover:text-[#C4B5FD] transition-colors">Features</a>
@@ -30,7 +31,7 @@ export default function Nav() {
           <a href="#pricing" className="text-[rgba(241,240,255,0.55)] hover:text-[#C4B5FD] transition-colors">Pricing</a>
         </div>
         <a href="#pricing" className="cta-btn cta-btn-primary !py-2 !px-5 !text-xs">
-          Get Started
+          Free Trial
         </a>
       </div>
     </nav>
