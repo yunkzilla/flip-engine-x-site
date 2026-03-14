@@ -75,14 +75,6 @@ export default function HowItWorks() {
             </div>
           ))}
         </div>
-
-        {/* Speed callout */}
-        <div data-animate className="opacity-0 mt-16 text-center">
-          <div className="glass-card laser-border inline-block px-10 py-6 rounded-2xl">
-            <div className="font-pixel text-[9px] text-[rgba(241,240,255,0.4)] mb-2 tracking-widest">AVERAGE SCAN TIME</div>
-            <div className="font-pixel text-3xl text-[#00ff80] glow-green">&lt; 1 SEC</div>
-          </div>
-        </div>
       </div>
     </section>
   );

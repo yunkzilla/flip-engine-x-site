@@ -8,12 +8,10 @@ export default function Hero() {
         </div>
 
         <h1 className="text-4xl sm:text-6xl lg:text-7xl font-black leading-tight mb-6">
-          <span className="text-[#F1F0FF]">The Swiss Army Knife</span>
+          <span className="text-[#F1F0FF]">Stop Guessing.</span>
           <br />
-          <span className="text-[#F1F0FF]">for </span>
-          <span className="text-[#8B5CF6] glow-violet">FBA Book</span>
-          <br />
-          <span className="text-[#FDE047] glow-yellow">Flipping</span>
+          <span className="text-[#8B5CF6] glow-violet">Start </span>
+          <span className="text-[#FDE047] glow-yellow">Flipping.</span>
         </h1>
 
         <p className="max-w-xl mx-auto text-lg sm:text-xl text-[rgba(241,240,255,0.55)] mb-10 leading-relaxed">
