@@ -7,9 +7,22 @@ const features = [
       </svg>
     ),
     title: "Camera Scanner",
-    desc: "Point your phone at any barcode. Instant detection using the native BarcodeDetector API — no lag, no app store download.",
+    desc: "Hybrid barcode engine — native BarcodeDetector API with ZXing fallback. Supports EAN-13, UPC-A, CODE-128, ISBN, and rotated barcodes with auto-retry.",
     color: "#8B5CF6",
     tier: null,
+  },
+  {
+    icon: (
+      <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#22D3EE" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+        <path d="M2 12s3-7 10-7 10 7 10 7-3 7-10 7-10-7-10-7Z"/>
+        <circle cx="12" cy="12" r="3"/>
+      </svg>
+    ),
+    title: "Engine X Vision",
+    desc: "Experimental AI-powered scanner. Uses Google Cloud Vision for OCR text detection, web-based product matching, and object localization — with TensorFlow.js real-time object detection on-device.",
+    color: "#22D3EE",
+    tier: null,
+    badge: "Experimental",
   },
   {
     icon: (
@@ -137,6 +150,11 @@ export default function Features() {
                 {f.tier && (
                   <span className="font-pixel text-[7px] px-2 py-0.5 rounded-full" style={{ background: "rgba(139,92,246,0.15)", border: "1px solid rgba(139,92,246,0.35)", color: "#C4B5FD" }}>
                     {f.tier}
+                  </span>
+                )}
+                {(f as typeof f & { badge?: string }).badge && (
+                  <span className="font-pixel text-[7px] px-2 py-0.5 rounded-full" style={{ background: "rgba(34,211,238,0.1)", border: "1px solid rgba(34,211,238,0.3)", color: "#22D3EE" }}>
+                    {(f as typeof f & { badge?: string }).badge}
                   </span>
                 )}
               </div>
