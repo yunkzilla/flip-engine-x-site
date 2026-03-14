@@ -135,8 +135,15 @@ export default function Features() {
           <h2 className="text-3xl sm:text-5xl font-black text-[#F1F0FF] mb-4">
             Everything You Need to <span className="text-[#8B5CF6]">Flip Faster</span>
           </h2>
-          <p className="max-w-lg mx-auto text-[rgba(241,240,255,0.55)] text-lg">
+          <p className="max-w-lg mx-auto text-[rgba(241,240,255,0.55)] text-lg mb-6">
             Built for speed. Designed for profit. Every tool a reseller needs in one app.
+          </p>
+          <div className="inline-flex items-center gap-3 rounded-full px-5 py-2.5" style={{ background: "rgba(0,255,128,0.06)", border: "1px solid rgba(0,255,128,0.2)" }}>
+            <span className="font-pixel text-[10px] text-[#00ff80] glow-green">1–3s</span>
+            <span className="text-sm text-[rgba(241,240,255,0.5)] font-semibold">average scan-to-data time</span>
+          </div>
+          <p className="mt-3 text-[10px] text-[rgba(241,240,255,0.2)] max-w-md mx-auto">
+            * Scan speed varies based on cellular signal strength, Wi-Fi quality, and device performance.
           </p>
         </div>
 
