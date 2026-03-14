@@ -249,6 +249,19 @@ body {
   to { opacity: 1; transform: translateY(0); }
 }
 
+@keyframes buyFlashPulse {
+  0% { opacity: 0; }
+  15% { opacity: 1; }
+  100% { opacity: 0; }
+}
+
+@keyframes buyFlashFade {
+  0% { opacity: 0; }
+  10% { opacity: 1; }
+  60% { opacity: 0.6; }
+  100% { opacity: 0; }
+}
+
 /* ── Scrollbar ── */
 ::-webkit-scrollbar { width: 6px; }
 ::-webkit-scrollbar-track { background: transparent; }

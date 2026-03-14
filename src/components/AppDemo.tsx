@@ -46,20 +46,44 @@ const books = [
 ];
 
 /* ── Shared phone chrome ── */
-function PhoneFrame({ children, glow }: { children: React.ReactNode; glow?: string }) {
+function PhoneFrame({ children, glow, buyFlash }: { children: React.ReactNode; glow?: string; buyFlash?: boolean }) {
   return (
     <div className="w-full max-w-[340px] mx-auto">
       <div
-        className="rounded-[32px] border border-[rgba(139,92,246,0.25)] bg-[#06050F] p-3 shadow-2xl overflow-hidden"
-        style={{ boxShadow: glow || "0 0 60px rgba(139,92,246,0.15), 0 25px 50px rgba(0,0,0,0.5)", height: PHONE_HEIGHT }}
+        className="rounded-[32px] border bg-[#06050F] p-3 shadow-2xl overflow-hidden relative"
+        style={{
+          boxShadow: buyFlash
+            ? "0 0 80px rgba(0,255,128,0.4), 0 0 160px rgba(0,255,128,0.15), 0 25px 50px rgba(0,0,0,0.5)"
+            : glow || "0 0 60px rgba(139,92,246,0.15), 0 25px 50px rgba(0,0,0,0.5)",
+          height: PHONE_HEIGHT,
+          borderColor: buyFlash ? "rgba(0,255,128,0.5)" : "rgba(139,92,246,0.25)",
+          transition: "box-shadow 0.4s ease, border-color 0.4s ease",
+        }}
       >
+        {/* Green flash overlay */}
+        {buyFlash && (
+          <div style={{
+            position: "absolute", inset: 0, zIndex: 20, pointerEvents: "none",
+            borderRadius: 32, animation: "buyFlashPulse 1.2s ease-out forwards",
+            background: "radial-gradient(ellipse at center, rgba(0,255,128,0.12) 0%, transparent 70%)",
+          }} />
+        )}
         <div className="flex items-center justify-between px-4 py-2 text-[10px] text-[rgba(241,240,255,0.4)] font-semibold">
           <span>9:41</span>
           <div className="w-20 h-5 rounded-full bg-[#111] mx-auto" />
           <span>100%</span>
         </div>
-        <div className="rounded-[20px] overflow-hidden" style={{ background: t.bgMid }}>
+        <div className="rounded-[20px] overflow-hidden relative" style={{ background: t.bgMid }}>
           {children}
+          {/* Green tint wash over content */}
+          {buyFlash && (
+            <div style={{
+              position: "absolute", inset: 0, zIndex: 15, pointerEvents: "none",
+              background: "rgba(0,255,128,0.06)",
+              animation: "buyFlashFade 1.2s ease-out forwards",
+              borderRadius: 20,
+            }} />
+          )}
         </div>
       </div>
     </div>
@@ -130,16 +154,18 @@ function AnimatedNum({ value, prefix = "", suffix = "", color }: { value: string
    ════════════════════════════════════════ */
 function ScannerMock({ bookIndex }: { bookIndex: number }) {
   const book = books[bookIndex];
-  const [scanPhase, setScanPhase] = useState<"scanning" | "found">("found");
+  const [scanPhase, setScanPhase] = useState<"scanning" | "found" | "buy">("found");
 
   useEffect(() => {
     setScanPhase("scanning");
-    const timer = setTimeout(() => setScanPhase("found"), 800);
-    return () => clearTimeout(timer);
+    const t1 = setTimeout(() => setScanPhase("found"), 800);
+    const t2 = setTimeout(() => setScanPhase("buy"), 2400);
+    const t3 = setTimeout(() => setScanPhase("found"), 3600);
+    return () => { clearTimeout(t1); clearTimeout(t2); clearTimeout(t3); };
   }, [bookIndex]);
 
   return (
-    <PhoneFrame glow="0 0 60px rgba(139,92,246,0.2), 0 25px 50px rgba(0,0,0,0.5)">
+    <PhoneFrame glow="0 0 60px rgba(139,92,246,0.2), 0 25px 50px rgba(0,0,0,0.5)" buyFlash={scanPhase === "buy"}>
       {/* Header block */}
       <Card className="mx-2.5 mt-2.5">
         <div style={{ display: "flex", gap: 6 }}>
@@ -250,9 +276,25 @@ function ScannerMock({ bookIndex }: { bookIndex: number }) {
           ))}
         </div>
         <div style={{ marginTop: 10, display: "flex", gap: 8, alignItems: "center" }}>
-          <button style={{ width: 100, padding: "10px 12px", borderRadius: t.rPill, border: "1px solid rgba(0,255,128,0.70)", background: "linear-gradient(135deg, rgba(0,255,128,0.18) 0%, rgba(0,200,100,0.12) 100%)", color: "#00ff80", fontWeight: 1000, fontSize: 11, boxShadow: "0 0 20px rgba(0,255,128,0.50), 0 0 6px rgba(0,255,128,0.30), inset 0 0 14px rgba(0,255,128,0.08)", textShadow: "0 0 14px rgba(0,255,128,0.95)" }}>KEEP</button>
+          <button style={{
+            width: 100, padding: "10px 12px", borderRadius: t.rPill,
+            border: scanPhase === "buy" ? "1px solid rgba(0,255,128,1)" : "1px solid rgba(0,255,128,0.70)",
+            background: scanPhase === "buy" ? "linear-gradient(135deg, rgba(0,255,128,0.35) 0%, rgba(0,200,100,0.25) 100%)" : "linear-gradient(135deg, rgba(0,255,128,0.18) 0%, rgba(0,200,100,0.12) 100%)",
+            color: "#00ff80", fontWeight: 1000, fontSize: 11,
+            boxShadow: scanPhase === "buy" ? "0 0 30px rgba(0,255,128,0.7), 0 0 60px rgba(0,255,128,0.3), inset 0 0 20px rgba(0,255,128,0.15)" : "0 0 20px rgba(0,255,128,0.50), 0 0 6px rgba(0,255,128,0.30), inset 0 0 14px rgba(0,255,128,0.08)",
+            textShadow: "0 0 14px rgba(0,255,128,0.95)",
+            transform: scanPhase === "buy" ? "scale(1.08)" : "scale(1)",
+            transition: "all 0.3s ease",
+          }}>KEEP</button>
           <button style={{ padding: "6px 10px", borderRadius: t.rPill, fontWeight: 900, fontSize: 9, border: "1px solid rgba(52,211,153,0.50)", background: "rgba(16,185,129,0.14)", color: t.goodText, whiteSpace: "nowrap" as const }}>AutoKeep ON</button>
-          <div style={{ flex: 1, padding: "6px 8px", borderRadius: t.rMd, background: t.primarySoft, border: `1px solid ${t.primaryBorder}`, color: "#7C3AED", fontWeight: 900, fontSize: 8, overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" as const }}>Kept → Batch 1</div>
+          <div style={{
+            flex: 1, padding: "6px 8px", borderRadius: t.rMd,
+            background: scanPhase === "buy" ? "rgba(0,255,128,0.12)" : t.primarySoft,
+            border: scanPhase === "buy" ? "1px solid rgba(0,255,128,0.3)" : `1px solid ${t.primaryBorder}`,
+            color: scanPhase === "buy" ? "#00ff80" : "#7C3AED",
+            fontWeight: 900, fontSize: 8, overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" as const,
+            transition: "all 0.3s ease",
+          }}>{scanPhase === "buy" ? "✓ Kept → Batch 1" : "Kept → Batch 1"}</div>
         </div>
       </Card>
       <div style={{ height: 12 }} />
