@@ -13,6 +13,17 @@ const features = [
   },
   {
     icon: (
+      <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#C4B5FD" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+        <path d="m7 7 10 10-5 5V2l5 5L7 17"/>
+      </svg>
+    ),
+    title: "Bluetooth Scanner",
+    desc: "Pair any Bluetooth barcode scanner for rapid-fire scanning. Point, click, done — no camera aiming needed. Perfect for high-volume sourcing at book sales and library sales.",
+    color: "#C4B5FD",
+    tier: null,
+  },
+  {
+    icon: (
       <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#22D3EE" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
         <path d="M2 12s3-7 10-7 10 7 10 7-3 7-10 7-10-7-10-7Z"/>
         <circle cx="12" cy="12" r="3"/>
