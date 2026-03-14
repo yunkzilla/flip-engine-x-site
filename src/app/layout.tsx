@@ -8,6 +8,10 @@ const pressStart = Press_Start_2P({ weight: "400", subsets: ["latin"], variable:
 export const metadata: Metadata = {
   title: "Flip Engine X — Scan. Flip. Stack.",
   description: "The fastest FBA scanning and batching tool for Amazon resellers. Camera barcode scanning, Keepa lookups, profit calculations, and inventory management in one PWA.",
+  icons: {
+    icon: "/favicon.png",
+    apple: "/icon-x-192.png",
+  },
 };
 
 export default function RootLayout({

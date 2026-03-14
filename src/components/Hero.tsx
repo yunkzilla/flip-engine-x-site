@@ -2,6 +2,7 @@ export default function Hero() {
   return (
     <section className="parallax-section min-h-screen flex flex-col items-center justify-center text-center px-6 pt-20">
       <div data-animate className="opacity-0">
+        <img src="/icon.svg" alt="Flip Engine X" className="w-16 h-16 sm:w-20 sm:h-20 mx-auto mb-6 drop-shadow-[0_0_24px_rgba(139,92,246,0.5)]" />
         <div className="font-pixel text-[10px] sm:text-xs text-[#22D3EE] glow-cyan tracking-widest mb-6 breathe">
           BUILT BY FLIPPERS. USED BY FLIPPERS.
         </div>

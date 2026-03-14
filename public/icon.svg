@@ -1,0 +1,18 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
+  <rect width="512" height="512" rx="108" fill="#0f0f0f"/>
+
+  <!-- 8-tooth motor gear (tip r=148, root r=118) -->
+  <path d="M211,147 L228,111 L284,111 L301,147
+           L339,133 L379,173 L365,211
+           L401,228 L401,284 L365,301
+           L379,339 L339,379 L301,365
+           L284,401 L228,401 L211,365
+           L173,379 L133,339 L147,301
+           L111,284 L111,228 L147,211
+           L133,173 L173,133 Z"
+        fill="#e0e0e0"/>
+
+  <!-- X cut into the gear -->
+  <rect x="196" y="245" width="120" height="22" rx="2" transform="rotate(45 256 256)" fill="#0f0f0f"/>
+  <rect x="196" y="245" width="120" height="22" rx="2" transform="rotate(-45 256 256)" fill="#0f0f0f"/>
+</svg>
