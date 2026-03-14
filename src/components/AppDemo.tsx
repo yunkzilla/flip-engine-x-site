@@ -2,7 +2,7 @@
 
 /* eslint-disable @next/next/no-img-element */
 
-import { useState } from "react";
+import { useState, useEffect, useCallback } from "react";
 
 /* ── Real theme tokens (from lib/uiTheme.ts) ── */
 const t = {
@@ -36,13 +36,22 @@ const t = {
 
 const PHONE_HEIGHT = 720;
 
+/* ── Book data for cycling ── */
+const books = [
+  { isbn10: "0135957052", barcode: "978-0134685991", title: "The Pragmatic Programmer: Your Journey to Mastery", letter: "P", rank: 4231, sold: 47, buyCost: "$3.50", salePrice: "$24.99", profit: "+$14.27", fees: "$7.22", roi: "408%" },
+  { isbn10: "0735211299", barcode: "978-0735211292", title: "Atomic Habits: An Easy & Proven Way to Build Good Habits", letter: "A", rank: 1892, sold: 83, buyCost: "$2.00", salePrice: "$16.50", profit: "+$8.70", fees: "$5.80", roi: "435%" },
+  { isbn10: "0441013597", barcode: "978-0441013593", title: "Dune", letter: "D", rank: 3104, sold: 62, buyCost: "$1.50", salePrice: "$12.99", profit: "+$5.69", fees: "$5.80", roi: "379%" },
+  { isbn10: "0132350882", barcode: "978-0132350884", title: "Clean Code: A Handbook of Agile Software Craftsmanship", letter: "C", rank: 2847, sold: 55, buyCost: "$2.50", salePrice: "$19.50", profit: "+$11.20", fees: "$5.80", roi: "448%" },
+  { isbn10: "0201633612", barcode: "978-0201633610", title: "Design Patterns: Elements of Reusable Object-Oriented Software", letter: "D", rank: 8102, sold: 28, buyCost: "$4.25", salePrice: "$31.00", profit: "+$18.65", fees: "$8.10", roi: "439%" },
+];
+
 /* ── Shared phone chrome ── */
-function PhoneFrame({ children }: { children: React.ReactNode }) {
+function PhoneFrame({ children, glow }: { children: React.ReactNode; glow?: string }) {
   return (
     <div className="w-full max-w-[340px] mx-auto">
       <div
         className="rounded-[32px] border border-[rgba(139,92,246,0.25)] bg-[#06050F] p-3 shadow-2xl overflow-hidden"
-        style={{ boxShadow: "0 0 60px rgba(139,92,246,0.15), 0 25px 50px rgba(0,0,0,0.5)", height: PHONE_HEIGHT }}
+        style={{ boxShadow: glow || "0 0 60px rgba(139,92,246,0.15), 0 25px 50px rgba(0,0,0,0.5)", height: PHONE_HEIGHT }}
       >
         <div className="flex items-center justify-between px-4 py-2 text-[10px] text-[rgba(241,240,255,0.4)] font-semibold">
           <span>9:41</span>
@@ -95,12 +104,42 @@ function Card({ children, className = "mx-2.5 mt-2" }: { children: React.ReactNo
   );
 }
 
-/* ════════════════════════════════════════
-   1. SCANNER MOCK
-   ════════════════════════════════════════ */
-function ScannerMock() {
+/* ── Animated number counter ── */
+function AnimatedNum({ value, prefix = "", suffix = "", color }: { value: string; prefix?: string; suffix?: string; color: string }) {
+  const [display, setDisplay] = useState(value);
+  const [fading, setFading] = useState(false);
+
+  useEffect(() => {
+    setFading(true);
+    const timer = setTimeout(() => {
+      setDisplay(value);
+      setFading(false);
+    }, 200);
+    return () => clearTimeout(timer);
+  }, [value]);
+
   return (
-    <PhoneFrame>
+    <span style={{ color, transition: "opacity 0.2s", opacity: fading ? 0.3 : 1 }}>
+      {prefix}{display}{suffix}
+    </span>
+  );
+}
+
+/* ════════════════════════════════════════
+   1. ANIMATED SCANNER MOCK
+   ════════════════════════════════════════ */
+function ScannerMock({ bookIndex }: { bookIndex: number }) {
+  const book = books[bookIndex];
+  const [scanPhase, setScanPhase] = useState<"scanning" | "found">("found");
+
+  useEffect(() => {
+    setScanPhase("scanning");
+    const timer = setTimeout(() => setScanPhase("found"), 800);
+    return () => clearTimeout(timer);
+  }, [bookIndex]);
+
+  return (
+    <PhoneFrame glow="0 0 60px rgba(139,92,246,0.2), 0 25px 50px rgba(0,0,0,0.5)">
       {/* Header block */}
       <Card className="mx-2.5 mt-2.5">
         <div style={{ display: "flex", gap: 6 }}>
@@ -118,24 +157,28 @@ function ScannerMock() {
         </div>
       </Card>
 
-      {/* Camera card */}
+      {/* Camera card with animated scan line */}
       <Card>
         <div style={{ display: "flex", justifyContent: "space-between", alignItems: "flex-start", gap: 8 }}>
           <div style={{ display: "flex", alignItems: "center", gap: 6 }}>
             <span className="font-pixel" style={{ fontSize: 9, color: t.cyberBright }}>SCAN</span>
-            <span style={{ fontSize: 9, color: "rgba(74,222,128,0.85)", fontWeight: 700 }}>● Live</span>
+            <span className="breathe" style={{ fontSize: 9, color: "rgba(74,222,128,0.85)", fontWeight: 700 }}>● Live</span>
           </div>
           <div style={{ display: "flex", gap: 4 }}>
             <span style={{ padding: "5px 8px", borderRadius: t.rPill, border: `1px solid ${t.primaryBorder}`, background: t.primarySoft, color: "#7C3AED", fontWeight: 900, fontSize: 8 }}>Barcode</span>
             <span style={{ padding: "5px 8px", borderRadius: t.rPill, border: `1px solid ${t.cardBorder}`, background: t.card, color: t.textSoft, fontWeight: 900, fontSize: 8 }}>ISBN</span>
           </div>
         </div>
-        <div className="relative mt-2 overflow-hidden" style={{ borderRadius: t.rLg, background: "#0B0F1A", border: `1px solid ${t.cardBorder}`, height: 120 }}>
-          <div className="absolute inset-x-0 h-[2px] top-1/2 opacity-70" style={{ background: "linear-gradient(90deg, transparent, #8B5CF6, transparent)", boxShadow: "0 0 12px rgba(139,92,246,0.8)" }} />
+        <div className="relative mt-2 overflow-hidden" style={{ borderRadius: t.rLg, background: "#0B0F1A", border: `1px solid ${scanPhase === "found" ? "rgba(0,255,128,0.3)" : t.cardBorder}`, height: 120, transition: "border-color 0.3s" }}>
+          {/* Animated scan line */}
+          <div className="scan-line-anim" style={{ position: "absolute", inset: 0 }}>
+            <div style={{ position: "absolute", left: 0, right: 0, height: 2, background: scanPhase === "found" ? "linear-gradient(90deg, transparent, #00ff80, transparent)" : "linear-gradient(90deg, transparent, #8B5CF6, transparent)", boxShadow: scanPhase === "found" ? "0 0 12px rgba(0,255,128,0.8)" : "0 0 12px rgba(139,92,246,0.8)", animation: "scanLine 2s ease-in-out infinite" }} />
+          </div>
           <div className="absolute top-3 left-3 w-4 h-4 border-t-2 border-l-2 border-[#8B5CF6] rounded-tl-sm opacity-60" />
           <div className="absolute top-3 right-3 w-4 h-4 border-t-2 border-r-2 border-[#8B5CF6] rounded-tr-sm opacity-60" />
           <div className="absolute bottom-3 left-3 w-4 h-4 border-b-2 border-l-2 border-[#8B5CF6] rounded-bl-sm opacity-60" />
           <div className="absolute bottom-3 right-3 w-4 h-4 border-b-2 border-r-2 border-[#8B5CF6] rounded-br-sm opacity-60" />
+          {/* Barcode visual */}
           <div className="absolute inset-0 flex items-center justify-center">
             <div className="flex gap-[2px] opacity-25">
               {[3,1,2,1,3,2,1,3,1,2,3,1,2,1,3,2,1,1,3,2,1,3,1,2].map((w, i) => (
@@ -143,6 +186,10 @@ function ScannerMock() {
               ))}
             </div>
           </div>
+          {/* Flash overlay on scan */}
+          {scanPhase === "scanning" && (
+            <div style={{ position: "absolute", inset: 0, background: "rgba(139,92,246,0.08)", animation: "flashScan 0.8s ease-out" }} />
+          )}
         </div>
         <div style={{ display: "flex", gap: 6, marginTop: 8 }}>
           {["Flash Off", "Close"].map(label => (
@@ -151,16 +198,16 @@ function ScannerMock() {
         </div>
       </Card>
 
-      {/* Product info */}
+      {/* Product info - animated book change */}
       <Card>
-        <div style={{ display: "flex", gap: 10 }}>
-          <BookCover isbn10="0135957052" letter="P" w={38} h={52} />
+        <div style={{ display: "flex", gap: 10, transition: "opacity 0.3s", opacity: scanPhase === "scanning" ? 0.3 : 1 }}>
+          <BookCover isbn10={book.isbn10} letter={book.letter} w={38} h={52} />
           <div style={{ minWidth: 0, flex: 1 }}>
-            <div style={{ fontSize: 9, color: t.textFaint, fontWeight: 700 }}>978-0134685991</div>
-            <div style={{ fontSize: 10, fontWeight: 900, color: t.text, lineHeight: 1.35, marginTop: 2 }}>The Pragmatic Programmer: Your Journey to Mastery</div>
+            <div style={{ fontSize: 9, color: t.textFaint, fontWeight: 700 }}>{book.barcode}</div>
+            <div style={{ fontSize: 10, fontWeight: 900, color: t.text, lineHeight: 1.35, marginTop: 2 }}>{book.title}</div>
             <div style={{ display: "flex", gap: 6, marginTop: 4 }}>
-              <span style={{ fontSize: 8, color: t.textFaint, fontWeight: 800 }}>Rank #4,231</span>
-              <span style={{ fontSize: 8, color: t.textFaint, fontWeight: 800 }}>47 sold/mo</span>
+              <span style={{ fontSize: 8, color: t.textFaint, fontWeight: 800 }}>Rank #<AnimatedNum value={book.rank.toLocaleString()} color={t.textFaint} /></span>
+              <span style={{ fontSize: 8, color: t.textFaint, fontWeight: 800 }}><AnimatedNum value={String(book.sold)} color={t.textFaint} /> sold/mo</span>
             </div>
           </div>
         </div>
@@ -169,17 +216,17 @@ function ScannerMock() {
       {/* Details + KEEP */}
       <Card>
         <span className="font-pixel" style={{ fontSize: 9, color: t.cyberBright }}>DETAILS</span>
-        <div style={{ marginTop: 8, display: "grid", gridTemplateColumns: "1fr 1fr", gap: 8 }}>
+        <div style={{ marginTop: 8, display: "grid", gridTemplateColumns: "1fr 1fr", gap: 8, transition: "opacity 0.3s", opacity: scanPhase === "scanning" ? 0.3 : 1 }}>
           <div style={{ display: "grid", gap: 4 }}>
             <div style={{ fontSize: 9, color: t.textSoft, fontWeight: 900 }}>Buy Cost</div>
-            <div style={{ padding: "8px 10px", borderRadius: t.rMd, border: `1px solid ${t.cardBorder}`, background: t.card, fontSize: 12, fontWeight: 900, color: "#22D3EE" }}>$3.50</div>
+            <div style={{ padding: "8px 10px", borderRadius: t.rMd, border: `1px solid ${t.cardBorder}`, background: t.card, fontSize: 12, fontWeight: 900, color: "#22D3EE" }}><AnimatedNum value={book.buyCost} color="#22D3EE" /></div>
           </div>
           <div style={{ display: "grid", gap: 4 }}>
             <div style={{ display: "flex", alignItems: "center", gap: 6 }}>
               <span style={{ fontSize: 9, color: t.textSoft, fontWeight: 900 }}>Sale Price</span>
-              <span style={{ fontSize: 8, fontWeight: 900, color: t.goodText, background: t.goodBg, border: `1px solid ${t.goodBorder}`, borderRadius: t.rPill, padding: "1px 5px" }}>+$14.27</span>
+              <span style={{ fontSize: 8, fontWeight: 900, color: t.goodText, background: t.goodBg, border: `1px solid ${t.goodBorder}`, borderRadius: t.rPill, padding: "1px 5px" }}><AnimatedNum value={book.profit} color={t.goodText} /></span>
             </div>
-            <div style={{ padding: "8px 10px", borderRadius: t.rMd, border: `1px solid ${t.cardBorder}`, background: t.card, fontSize: 12, fontWeight: 900, color: "#C4B5FD" }}>$24.99</div>
+            <div style={{ padding: "8px 10px", borderRadius: t.rMd, border: `1px solid ${t.cardBorder}`, background: t.card, fontSize: 12, fontWeight: 900, color: "#C4B5FD" }}><AnimatedNum value={book.salePrice} color="#C4B5FD" /></div>
           </div>
           <div style={{ display: "grid", gap: 4 }}>
             <div style={{ fontSize: 9, color: t.textSoft, fontWeight: 900 }}>Condition</div>
@@ -195,10 +242,10 @@ function ScannerMock() {
           </div>
         </div>
         <div style={{ marginTop: 10, display: "flex", gap: 6, flexWrap: "wrap" as const }}>
-          {[["Fees", "$7.22"], ["ROI", "408%"]].map(([k, v]) => (
+          {[["Fees", book.fees], ["ROI", book.roi]].map(([k, v]) => (
             <div key={k} style={{ padding: "6px 10px", borderRadius: t.rPill, border: `1px solid ${t.cardBorder}`, background: t.softSurface, display: "flex", gap: 6, alignItems: "center", fontWeight: 900 }}>
               <span style={{ color: t.textSoft, fontSize: 9 }}>{k}</span>
-              <span style={{ color: t.text, fontSize: 9 }}>{v}</span>
+              <span style={{ fontSize: 9 }}><AnimatedNum value={v} color={t.text} /></span>
             </div>
           ))}
         </div>
@@ -214,18 +261,14 @@ function ScannerMock() {
 }
 
 /* ════════════════════════════════════════
-   2. BATCH MOCK
+   2. BATCH MOCK (with animated item count)
    ════════════════════════════════════════ */
-const batchItems = [
-  { id: "1", barcode: "978-0135957059", title: "The Pragmatic Programmer", isbn10: "0135957052", letter: "P", condition: "Very Good", qty: 1, buyCost: 3.50, salePrice: 24.99, profit: 14.27, roi: 408 },
-  { id: "2", barcode: "978-0735211292", title: "Atomic Habits", isbn10: "0735211299", letter: "A", condition: "Good", qty: 2, buyCost: 2.00, salePrice: 16.50, profit: 8.70, roi: 435 },
-  { id: "3", barcode: "978-0441013593", title: "Dune", isbn10: "0441013597", letter: "D", condition: "Like New", qty: 1, buyCost: 1.50, salePrice: 12.99, profit: 5.69, roi: 379 },
-];
+function BatchMock({ bookIndex }: { bookIndex: number }) {
+  const visibleBooks = books.slice(0, Math.min(bookIndex + 2, books.length));
+  const totalProfit = visibleBooks.reduce((sum, b) => sum + parseFloat(b.profit.replace("+$", "")), 0);
 
-function BatchMock() {
   return (
-    <PhoneFrame>
-      {/* Top bar */}
+    <PhoneFrame glow="0 0 60px rgba(0,255,128,0.12), 0 25px 50px rgba(0,0,0,0.5)">
       <div className="flex items-center justify-between px-4 py-3">
         <div className="flex items-center gap-2">
           <span style={{ fontSize: 14, color: t.textSoft }}>‹</span>
@@ -234,7 +277,6 @@ function BatchMock() {
         <span style={{ fontSize: 12, fontWeight: 800, color: t.textSoft }}>Batch</span>
       </div>
 
-      {/* Title row */}
       <div style={{ padding: "0 14px", display: "flex", justifyContent: "space-between", alignItems: "flex-end", gap: 8 }}>
         <div>
           <div style={{ fontSize: 18, fontWeight: 900, color: t.text }}>Batch</div>
@@ -243,48 +285,44 @@ function BatchMock() {
         <span style={{ padding: "7px 12px", borderRadius: t.rPill, border: `1px solid ${t.primaryBorder}`, background: t.primarySoft, color: t.primary, fontWeight: 900, fontSize: 10, whiteSpace: "nowrap" as const, flexShrink: 0 }}>+ Create Batch</span>
       </div>
 
-      {/* Summary cards (real: ui.grid2 + ui.infoCard) */}
       <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 8, padding: "0 10px", marginTop: 10 }}>
         <div style={{ background: t.card, borderRadius: t.rLg, padding: 12, border: `1px solid ${t.cardBorder}`, borderBottom: `2px solid ${t.cyberBorder}`, boxShadow: t.shadowSoft }}>
           <div style={{ fontSize: 9, color: t.textSoft, fontWeight: 900 }}>Items</div>
-          <div style={{ marginTop: 4, fontSize: 13, fontWeight: 900, color: t.text }}>4</div>
+          <div style={{ marginTop: 4, fontSize: 13, fontWeight: 900 }}><AnimatedNum value={String(visibleBooks.length)} color={t.text} /></div>
         </div>
         <div style={{ background: t.card, borderRadius: t.rLg, padding: 12, border: `1px solid ${t.cardBorder}`, borderBottom: `2px solid ${t.cyberBorder}`, boxShadow: t.shadowSoft }}>
           <div style={{ fontSize: 9, color: t.textSoft, fontWeight: 900 }}>Total Profit</div>
-          <div style={{ marginTop: 4, fontSize: 13, fontWeight: 900, color: "#00ff80" }}>$28.66</div>
+          <div style={{ marginTop: 4, fontSize: 13, fontWeight: 900 }}><AnimatedNum value={`$${totalProfit.toFixed(2)}`} color="#00ff80" /></div>
         </div>
       </div>
 
-      {/* Batch items */}
       <div style={{ padding: "8px 8px 12px", display: "flex", flexDirection: "column" as const, gap: 8, marginTop: 2 }}>
-        {batchItems.map(it => (
-          <Card key={it.id} className="">
-            {/* Header: book cover + title + profit pill */}
-            <div style={{ display: "flex", gap: 8, alignItems: "flex-start" }}>
-              <BookCover isbn10={it.isbn10} letter={it.letter} w={32} h={44} />
-              <div style={{ flex: 1, minWidth: 0 }}>
-                <div style={{ fontWeight: 1000, fontSize: 11, color: t.text, overflow: "hidden", display: "-webkit-box", WebkitLineClamp: 2, WebkitBoxOrient: "vertical" as const }}>{it.title}</div>
-                <div style={{ marginTop: 3, color: t.textSoft, fontSize: 9, fontWeight: 800 }}>{it.condition} &middot; Qty {it.qty}</div>
-              </div>
-              <div style={{ padding: "5px 9px", borderRadius: t.rPill, fontWeight: 900, fontSize: 10, border: `1px solid ${it.profit >= 5 ? t.goodBorder : t.cardBorder}`, background: it.profit >= 5 ? t.goodBg : t.softSurface, color: it.profit >= 5 ? t.goodText : t.textSoft, whiteSpace: "nowrap" as const, flexShrink: 0 }}>${it.profit.toFixed(2)}</div>
-            </div>
-
-            {/* KV grid (real: ui.kvGrid + ui.kv) */}
-            <div style={{ marginTop: 8, display: "grid", gridTemplateColumns: "1fr 1fr 1fr", gap: 6 }}>
-              {[["Buy", `$${it.buyCost.toFixed(2)}`], ["Sale", `$${it.salePrice.toFixed(2)}`], ["ROI", `${it.roi}%`]].map(([k, v]) => (
-                <div key={k} style={{ padding: 8, borderRadius: t.rMd, border: `1px solid ${t.cardBorder}`, background: t.softSurface }}>
-                  <div style={{ fontSize: 8, color: t.textSoft, fontWeight: 900 }}>{k}</div>
-                  <div style={{ marginTop: 3, fontSize: 10, fontWeight: 900, color: t.text }}>{v}</div>
+        {visibleBooks.map((book, i) => {
+          const profit = parseFloat(book.profit.replace("+$", ""));
+          return (
+            <div key={book.isbn10} style={{ background: t.card, borderRadius: t.rLg, padding: 14, boxShadow: t.shadowCard, border: `1px solid ${t.cardBorder}`, animation: i === visibleBooks.length - 1 && bookIndex > 0 ? "slideInItem 0.4s ease-out" : undefined }}>
+              <div style={{ display: "flex", gap: 8, alignItems: "flex-start" }}>
+                <BookCover isbn10={book.isbn10} letter={book.letter} w={32} h={44} />
+                <div style={{ flex: 1, minWidth: 0 }}>
+                  <div style={{ fontWeight: 1000, fontSize: 11, color: t.text, overflow: "hidden", display: "-webkit-box", WebkitLineClamp: 2, WebkitBoxOrient: "vertical" as const }}>{book.title}</div>
+                  <div style={{ marginTop: 3, color: t.textSoft, fontSize: 9, fontWeight: 800 }}>Very Good · Qty 1</div>
                 </div>
-              ))}
+                <div style={{ padding: "5px 9px", borderRadius: t.rPill, fontWeight: 900, fontSize: 10, border: `1px solid ${profit >= 5 ? t.goodBorder : t.cardBorder}`, background: profit >= 5 ? t.goodBg : t.softSurface, color: profit >= 5 ? t.goodText : t.textSoft, whiteSpace: "nowrap" as const, flexShrink: 0 }}>${profit.toFixed(2)}</div>
+              </div>
+              <div style={{ marginTop: 8, display: "grid", gridTemplateColumns: "1fr 1fr 1fr", gap: 6 }}>
+                {[["Buy", book.buyCost], ["Sale", book.salePrice], ["ROI", book.roi]].map(([k, v]) => (
+                  <div key={k} style={{ padding: 8, borderRadius: t.rMd, border: `1px solid ${t.cardBorder}`, background: t.softSurface }}>
+                    <div style={{ fontSize: 8, color: t.textSoft, fontWeight: 900 }}>{k}</div>
+                    <div style={{ marginTop: 3, fontSize: 10, fontWeight: 900, color: t.text }}>{v}</div>
+                  </div>
+                ))}
+              </div>
+              <div style={{ marginTop: 8 }}>
+                <span style={{ padding: "5px 10px", borderRadius: t.rPill, border: `1px solid ${t.cardBorder}`, background: t.softSurface, fontWeight: 900, fontSize: 9, color: t.text }}>Remove</span>
+              </div>
             </div>
-
-            {/* Remove button */}
-            <div style={{ marginTop: 8 }}>
-              <span style={{ padding: "5px 10px", borderRadius: t.rPill, border: `1px solid ${t.cardBorder}`, background: t.softSurface, fontWeight: 900, fontSize: 9, color: t.text }}>Remove</span>
-            </div>
-          </Card>
-        ))}
+          );
+        })}
       </div>
     </PhoneFrame>
   );
@@ -303,7 +341,7 @@ const inventoryItems = [
 
 function InventoryMock() {
   return (
-    <PhoneFrame>
+    <PhoneFrame glow="0 0 60px rgba(34,211,238,0.12), 0 25px 50px rgba(0,0,0,0.5)">
       <div className="flex items-center justify-between px-4 py-3">
         <div className="flex items-center gap-2">
           <span style={{ fontSize: 14, color: t.textSoft }}>‹</span>
@@ -314,10 +352,9 @@ function InventoryMock() {
 
       <div className="px-4">
         <h2 style={{ fontSize: 18, fontWeight: 900, color: t.text, margin: 0 }}>Inventory</h2>
-        <div style={{ fontSize: 10, color: t.textFaint, fontWeight: 700, marginTop: 2 }}>Synced from Amazon &middot; 7 items</div>
+        <div style={{ fontSize: 10, color: t.textFaint, fontWeight: 700, marginTop: 2 }}>Synced from Amazon · 7 items</div>
       </div>
 
-      {/* Stats */}
       <div style={{ display: "flex", gap: 6, padding: "0 12px", marginTop: 10 }}>
         {[
           { val: "7", label: "Items", color: t.text },
@@ -331,14 +368,12 @@ function InventoryMock() {
         ))}
       </div>
 
-      {/* Filter tabs */}
       <div style={{ margin: "10px 12px 0", background: t.softSurface, borderRadius: t.rPill, padding: 4, display: "grid", gridTemplateColumns: "1fr 1fr 1fr 1fr", gap: 3, border: `1px solid ${t.cyberBorder}`, boxShadow: t.shadowSoft }}>
         {["All", "In Stock", "Zero", "Sold"].map((label, i) => (
           <div key={label} style={{ padding: "6px 4px", borderRadius: t.rPill, fontWeight: 900, fontSize: 9, textAlign: "center", background: i === 0 ? t.card : "transparent", boxShadow: i === 0 ? t.shadowSoft : "none", color: i === 0 ? t.text : t.textSoft }}>{label}</div>
         ))}
       </div>
 
-      {/* Items */}
       <div style={{ padding: "8px 8px 12px", display: "flex", flexDirection: "column" as const, gap: 8 }}>
         {inventoryItems.map(item => {
           const isSold = (item as typeof item & { sold?: boolean }).sold === true;
@@ -385,11 +420,11 @@ function InventoryMock() {
 }
 
 /* ════════════════════════════════════════
-   4. SETTINGS/PARAMETERS MOCK
+   4. SETTINGS MOCK
    ════════════════════════════════════════ */
 function SettingsMock() {
   return (
-    <PhoneFrame>
+    <PhoneFrame glow="0 0 60px rgba(253,224,71,0.1), 0 25px 50px rgba(0,0,0,0.5)">
       <div className="flex items-center justify-between px-4 py-3">
         <div className="flex items-center gap-2">
           <span style={{ fontSize: 14, color: t.primary, fontWeight: 900 }}>‹</span>
@@ -403,7 +438,6 @@ function SettingsMock() {
         <div style={{ fontSize: 10, color: t.textSoft, fontWeight: 700, marginTop: 2 }}>Tune profit rules, fees, and audio.</div>
       </div>
 
-      {/* AutoKeep card */}
       <Card>
         <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", gap: 12 }}>
           <span className="font-pixel" style={{ fontSize: 9, color: t.cyberBright }}>AUTOKEEP</span>
@@ -416,7 +450,6 @@ function SettingsMock() {
         <div style={{ marginTop: 6, color: t.textSoft, fontSize: 9, fontWeight: 700 }}>If ON, profitable scans are saved automatically.</div>
       </Card>
 
-      {/* Fees card */}
       <Card>
         <span className="font-pixel" style={{ fontSize: 9, color: t.cyberBright }}>FEES</span>
         <div style={{ marginTop: 8, display: "grid", gridTemplateColumns: "1fr 1fr", gap: 8 }}>
@@ -435,7 +468,6 @@ function SettingsMock() {
         </div>
       </Card>
 
-      {/* Sale Price Mode card */}
       <Card>
         <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center", gap: 12 }}>
           <span className="font-pixel" style={{ fontSize: 9, color: t.cyberBright }}>SALE PRICE</span>
@@ -448,7 +480,6 @@ function SettingsMock() {
         <div style={{ marginTop: 6, color: t.textSoft, fontSize: 9, fontWeight: 700, lineHeight: 1.4 }}>Engine X analyzes real-time market competition and sales velocity to automatically set the most profitable price.</div>
       </Card>
 
-      {/* Engine X Parameters card */}
       <Card>
         <span className="font-pixel" style={{ fontSize: 9, color: t.cyberBright }}>ENGINE X PARAMETERS</span>
         <div style={{ marginTop: 6, color: t.textSoft, fontSize: 9, fontWeight: 700 }}>Control how aggressively Engine X prices each item.</div>
@@ -477,14 +508,33 @@ function SettingsMock() {
    MAIN DEMO SECTION
    ════════════════════════════════════════ */
 export default function AppDemo() {
-  const screens = [
-    { key: "scanner", label: "Scanner", component: <ScannerMock />, color: "#8B5CF6" },
-    { key: "batch", label: "Batches", component: <BatchMock />, color: "#00ff80", tier: "Pro+" },
-    { key: "inventory", label: "Inventory", component: <InventoryMock />, color: "#22D3EE", tier: "Pro+" },
-    { key: "settings", label: "Settings", component: <SettingsMock />, color: "#FDE047" },
+  const [bookIndex, setBookIndex] = useState(0);
+  const [rightScreen, setRightScreen] = useState(0);
+
+  const rightScreens = [
+    { key: "batch", label: "Batches", color: "#00ff80", tier: "Pro+" },
+    { key: "inventory", label: "Inventory", color: "#22D3EE", tier: "Pro+" },
+    { key: "settings", label: "Settings", color: "#FDE047" },
   ];
 
-  const [active, setActive] = useState(0);
+  // Auto-cycle books every 4 seconds
+  const cycleBook = useCallback(() => {
+    setBookIndex(prev => (prev + 1) % books.length);
+  }, []);
+
+  useEffect(() => {
+    const interval = setInterval(cycleBook, 4000);
+    return () => clearInterval(interval);
+  }, [cycleBook]);
+
+  const renderRight = () => {
+    switch (rightScreen) {
+      case 0: return <BatchMock bookIndex={bookIndex} />;
+      case 1: return <InventoryMock />;
+      case 2: return <SettingsMock />;
+      default: return <BatchMock bookIndex={bookIndex} />;
+    }
+  };
 
   return (
     <section id="demo" className="parallax-section py-16 sm:py-24 px-6">
@@ -499,18 +549,29 @@ export default function AppDemo() {
           </p>
         </div>
 
-        {/* Screen tabs */}
+        {/* Right screen tabs */}
         <div className="flex justify-center gap-2 sm:gap-3 mb-10" data-animate>
-          {screens.map((s, i) => (
+          <div className="font-pixel text-[8px] px-3 sm:px-5 py-2 rounded-full flex items-center gap-1.5"
+            style={{
+              background: "rgba(139,92,246,0.20)",
+              border: "1px solid rgba(139,92,246,0.60)",
+              color: "#8B5CF6",
+              boxShadow: "0 0 16px rgba(139,92,246,0.25)",
+            }}
+          >
+            SCANNER
+          </div>
+          <div className="text-[rgba(241,240,255,0.2)] flex items-center font-pixel text-[8px]">+</div>
+          {rightScreens.map((s, i) => (
             <button
               key={s.key}
-              onClick={() => setActive(i)}
+              onClick={() => setRightScreen(i)}
               className="font-pixel text-[8px] sm:text-[9px] px-3 sm:px-5 py-2 rounded-full transition-all flex items-center gap-1.5"
               style={{
-                background: active === i ? `${s.color}20` : "rgba(255,255,255,0.04)",
-                border: `1px solid ${active === i ? `${s.color}60` : "rgba(255,255,255,0.08)"}`,
-                color: active === i ? s.color : "rgba(241,240,255,0.4)",
-                boxShadow: active === i ? `0 0 16px ${s.color}25` : "none",
+                background: rightScreen === i ? `${s.color}20` : "rgba(255,255,255,0.04)",
+                border: `1px solid ${rightScreen === i ? `${s.color}60` : "rgba(255,255,255,0.08)"}`,
+                color: rightScreen === i ? s.color : "rgba(241,240,255,0.4)",
+                boxShadow: rightScreen === i ? `0 0 16px ${s.color}25` : "none",
               }}
             >
               {s.label.toUpperCase()}
@@ -523,8 +584,27 @@ export default function AppDemo() {
           ))}
         </div>
 
-        <div className="flex justify-center" data-animate>
-          {screens[active].component}
+        {/* Two phones side by side */}
+        <div className="flex justify-center items-start gap-6 lg:gap-10" data-animate>
+          {/* Scanner - always visible, hidden on small screens */}
+          <div className="hidden md:block flex-shrink-0">
+            <ScannerMock bookIndex={bookIndex} />
+          </div>
+          {/* Right screen */}
+          <div className="flex-shrink-0">
+            {/* Show scanner on mobile when no right screen context */}
+            <div className="md:hidden">
+              <ScannerMock bookIndex={bookIndex} />
+            </div>
+            <div className="hidden md:block">
+              {renderRight()}
+            </div>
+          </div>
+        </div>
+
+        {/* Mobile: show right screen below */}
+        <div className="md:hidden mt-8 flex justify-center" data-animate>
+          {renderRight()}
         </div>
       </div>
     </section>

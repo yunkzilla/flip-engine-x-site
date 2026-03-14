@@ -233,6 +233,22 @@ body {
   transform: translateY(-2px);
 }
 
+/* ── Scan line animation ── */
+@keyframes scanLine {
+  0%, 100% { top: 15%; }
+  50% { top: 75%; }
+}
+
+@keyframes flashScan {
+  0% { opacity: 0.6; }
+  100% { opacity: 0; }
+}
+
+@keyframes slideInItem {
+  from { opacity: 0; transform: translateY(20px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
 /* ── Scrollbar ── */
 ::-webkit-scrollbar { width: 6px; }
 ::-webkit-scrollbar-track { background: transparent; }
