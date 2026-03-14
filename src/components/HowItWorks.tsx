@@ -4,24 +4,28 @@ const steps = [
     title: "Scan",
     desc: "Point your camera at any barcode, type a UPC, or connect a Bluetooth scanner. Flip Engine X detects it instantly.",
     color: "#8B5CF6",
+    tier: null,
   },
   {
     num: "02",
     title: "Analyze",
     desc: "Keepa data loads in under a second. See sales rank, pricing history, FBA/FBM offers, and your estimated profit in real time.",
     color: "#22D3EE",
+    tier: null,
   },
   {
     num: "03",
     title: "Decide",
-    desc: "Triggers fire automatically based on your rules. Color-coded alerts and sound effects tell you to BUY or PASS before you even look.",
+    desc: "Set up to 20 trigger parameters with color-coded alerts and sound effects. Starter includes 3 triggers — Pro and above unlocks all 20.",
     color: "#FDE047",
+    tier: "Pro+",
   },
   {
     num: "04",
     title: "Batch",
-    desc: "Keep items into organized batches. Set pricing rules, shipping locations, and send directly to your FBA workflow.",
+    desc: "Organize kept items into FBA or FBM batches, set pricing rules and shipping locations, and manage your entire workflow. Available on Pro and above.",
     color: "#00ff80",
+    tier: "Pro+",
   },
 ];
 
@@ -56,9 +60,16 @@ export default function HowItWorks() {
                 {s.num}
               </div>
               <div>
-                <h3 className="font-pixel text-[11px] mb-2" style={{ color: s.color }}>
-                  {s.title.toUpperCase()}
-                </h3>
+                <div className="flex items-center gap-2 mb-2">
+                  <h3 className="font-pixel text-[11px]" style={{ color: s.color }}>
+                    {s.title.toUpperCase()}
+                  </h3>
+                  {s.tier && (
+                    <span className="font-pixel text-[7px] px-2 py-0.5 rounded-full" style={{ background: "rgba(139,92,246,0.15)", border: "1px solid rgba(139,92,246,0.35)", color: "#C4B5FD" }}>
+                      {s.tier}
+                    </span>
+                  )}
+                </div>
                 <p className="text-sm text-[rgba(241,240,255,0.55)] leading-relaxed">{s.desc}</p>
               </div>
             </div>
