@@ -2,9 +2,12 @@
 
 import { useState } from "react";
 
+const APP_URL = "https://semirebelliously-nonanguished-ciera.ngrok-free.dev";
+
 const plans = [
   {
     name: "STARTER",
+    tier: "starter",
     monthly: "$19.99",
     annual: "$14.99",
     desc: "Get scanning with core features and solid limits.",
@@ -26,6 +29,7 @@ const plans = [
   },
   {
     name: "PRO",
+    tier: "pro",
     monthly: "$49.99",
     annual: "$39.99",
     desc: "Full power for serious resellers.",
@@ -47,6 +51,7 @@ const plans = [
   },
   {
     name: "ELITE",
+    tier: "elite",
     monthly: "$99.99",
     annual: "$79.99",
     desc: "Unlimited scans and full automation.",
@@ -67,6 +72,7 @@ const plans = [
   },
   {
     name: "ENTERPRISE",
+    tier: "enterprise",
     monthly: "$199.99",
     annual: "$159.99",
     desc: "For teams and high-volume operations.",
@@ -183,7 +189,14 @@ export default function Pricing() {
                 ))}
               </ul>
 
-              <a href="#" className={p.ctaClass}>{p.cta}</a>
+              <a
+                href={p.tier === "enterprise" ? "mailto:support@flipenginex.com" : `${APP_URL}/plans?plan=${p.tier}&billing=${annual ? "annual" : "monthly"}`}
+                target={p.tier === "enterprise" ? undefined : "_blank"}
+                rel={p.tier === "enterprise" ? undefined : "noopener noreferrer"}
+                className={p.ctaClass}
+              >
+                {p.cta}
+              </a>
             </div>
           ))}
         </div>
