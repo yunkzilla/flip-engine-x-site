@@ -231,9 +231,18 @@ function ScannerMock({ bookIndex }: { bookIndex: number }) {
           <div style={{ minWidth: 0, flex: 1 }}>
             <div style={{ fontSize: 9, color: t.textFaint, fontWeight: 700 }}>{book.barcode}</div>
             <div style={{ fontSize: 10, fontWeight: 900, color: t.text, lineHeight: 1.35, marginTop: 2 }}>{book.title}</div>
-            <div style={{ display: "flex", gap: 6, marginTop: 4 }}>
+            <div style={{ display: "flex", gap: 6, marginTop: 4, alignItems: "center" }}>
               <span style={{ fontSize: 8, color: t.textFaint, fontWeight: 800 }}>Rank #<AnimatedNum value={book.rank.toLocaleString()} color={t.textFaint} /></span>
               <span style={{ fontSize: 8, color: t.textFaint, fontWeight: 800 }}><AnimatedNum value={String(book.sold)} color={t.textFaint} /> sold/mo</span>
+              {bookIndex === 1 && scanPhase !== "scanning" && (
+                <span style={{
+                  fontSize: 7, fontWeight: 1000, color: "#FDE047",
+                  background: "rgba(253,224,71,0.12)", border: "1px solid rgba(253,224,71,0.35)",
+                  borderRadius: t.rPill, padding: "2px 6px",
+                  textShadow: "0 0 8px rgba(253,224,71,0.6)",
+                  animation: "fadeInUp 0.4s ease forwards",
+                }}>🏆 PB — BEST SELLER</span>
+              )}
             </div>
           </div>
         </div>
@@ -547,6 +556,82 @@ function SettingsMock() {
 }
 
 /* ════════════════════════════════════════
+   5. RANKED / RECORDS MOCK
+   ════════════════════════════════════════ */
+const records = [
+  { category: "Best Seller", icon: "🏆", value: "#1,892", title: "Atomic Habits", isbn10: "0735211299", letter: "A", color: "#FDE047" },
+  { category: "Biggest Win", icon: "💰", value: "+$18.65", title: "Design Patterns", isbn10: "0201633612", letter: "D", color: "#00ff80" },
+  { category: "Best ROI", icon: "📈", value: "448%", title: "Clean Code", isbn10: "0132350882", letter: "C", color: "#22D3EE" },
+  { category: "Priciest Find", icon: "💎", value: "$31.00", title: "Design Patterns", isbn10: "0201633612", letter: "D", color: "#C4B5FD" },
+  { category: "Best Bargain", icon: "🔥", value: "$1.50", title: "Dune", isbn10: "0441013597", letter: "D", color: "#f87171" },
+  { category: "Hottest Seller", icon: "⚡", value: "83/mo", title: "Atomic Habits", isbn10: "0735211299", letter: "A", color: "#8B5CF6" },
+];
+
+function RankedMock() {
+  const [period, setPeriod] = useState(0);
+  const periods = ["Week", "Month", "Year"];
+  const stats = [
+    { label: "Scanned", value: "142", color: t.text },
+    { label: "Profit", value: "$487", color: "#00ff80" },
+    { label: "Avg Profit", value: "$8.12", color: "#22D3EE" },
+    { label: "Avg ROI", value: "312%", color: "#FDE047" },
+  ];
+
+  return (
+    <PhoneFrame glow="0 0 60px rgba(253,224,71,0.12), 0 25px 50px rgba(0,0,0,0.5)">
+      <div className="flex items-center justify-between px-4 py-3">
+        <div className="flex items-center gap-2">
+          <span style={{ fontSize: 14, color: t.primary, fontWeight: 900 }}>‹</span>
+          <span style={{ fontSize: 12, fontWeight: 900, color: t.primary }}>Home</span>
+        </div>
+        <span style={{ fontSize: 12, fontWeight: 800, color: t.textSoft }}>Records</span>
+      </div>
+
+      <div className="px-4">
+        <div style={{ fontSize: 18, fontWeight: 900, color: t.text }}>Personal Records</div>
+        <div style={{ fontSize: 10, color: t.textSoft, fontWeight: 700, marginTop: 2 }}>Your best finds across all sessions.</div>
+      </div>
+
+      {/* Period toggle */}
+      <div style={{ margin: "10px 12px 0", background: t.softSurface, borderRadius: t.rPill, padding: 4, display: "grid", gridTemplateColumns: "1fr 1fr 1fr", gap: 3, border: `1px solid ${t.cyberBorder}`, boxShadow: t.shadowSoft }}>
+        {periods.map((label, i) => (
+          <button key={label} onClick={() => setPeriod(i)} style={{ padding: "6px 4px", borderRadius: t.rPill, fontWeight: 900, fontSize: 9, textAlign: "center", background: period === i ? t.card : "transparent", boxShadow: period === i ? t.shadowSoft : "none", color: period === i ? t.text : t.textSoft, border: "none", cursor: "pointer" }}>{label}</button>
+        ))}
+      </div>
+
+      {/* Aggregate stats */}
+      <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr 1fr 1fr", gap: 6, padding: "10px 12px 0" }}>
+        {stats.map(s => (
+          <div key={s.label} style={{ borderRadius: t.rLg, background: t.card, border: `1px solid ${t.cardBorder}`, boxShadow: t.shadowSoft, padding: "8px 4px", textAlign: "center" }}>
+            <div style={{ fontSize: 14, fontWeight: 1000, color: s.color, letterSpacing: -0.4 }}>{s.value}</div>
+            <div style={{ marginTop: 2, fontSize: 7, fontWeight: 800, color: t.textFaint, textTransform: "uppercase" as const, letterSpacing: 0.5 }}>{s.label}</div>
+          </div>
+        ))}
+      </div>
+
+      {/* Record cards */}
+      <div style={{ padding: "8px 8px 12px", display: "flex", flexDirection: "column" as const, gap: 8 }}>
+        {records.map(r => (
+          <div key={r.category} style={{ background: t.card, borderRadius: t.rLg, padding: 12, boxShadow: t.shadowCard, border: `1px solid ${t.cardBorder}`, borderLeft: `3px solid ${r.color}` }}>
+            <div style={{ display: "flex", gap: 8, alignItems: "center" }}>
+              <BookCover isbn10={r.isbn10} letter={r.letter} w={28} h={38} />
+              <div style={{ flex: 1, minWidth: 0 }}>
+                <div style={{ display: "flex", alignItems: "center", gap: 6 }}>
+                  <span style={{ fontSize: 11 }}>{r.icon}</span>
+                  <span className="font-pixel" style={{ fontSize: 8, color: r.color }}>{r.category.toUpperCase()}</span>
+                </div>
+                <div style={{ fontWeight: 900, fontSize: 10, color: t.text, marginTop: 2, overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" as const }}>{r.title}</div>
+              </div>
+              <div style={{ padding: "5px 10px", borderRadius: t.rPill, fontWeight: 1000, fontSize: 11, background: `${r.color}15`, border: `1px solid ${r.color}40`, color: r.color, flexShrink: 0 }}>{r.value}</div>
+            </div>
+          </div>
+        ))}
+      </div>
+    </PhoneFrame>
+  );
+}
+
+/* ════════════════════════════════════════
    MAIN DEMO SECTION
    ════════════════════════════════════════ */
 export default function AppDemo() {
@@ -556,7 +641,8 @@ export default function AppDemo() {
   const rightScreens = [
     { key: "batch", label: "Batches", color: "#00ff80", tier: "Pro+" },
     { key: "inventory", label: "Inventory", color: "#22D3EE", tier: "Pro+" },
-    { key: "settings", label: "Settings", color: "#FDE047" },
+    { key: "ranked", label: "Records", color: "#FDE047" },
+    { key: "settings", label: "Settings", color: "#C4B5FD" },
   ];
 
   // Auto-cycle books every 4 seconds
@@ -573,7 +659,8 @@ export default function AppDemo() {
     switch (rightScreen) {
       case 0: return <BatchMock bookIndex={bookIndex} />;
       case 1: return <InventoryMock />;
-      case 2: return <SettingsMock />;
+      case 2: return <RankedMock />;
+      case 3: return <SettingsMock />;
       default: return <BatchMock bookIndex={bookIndex} />;
     }
   };
