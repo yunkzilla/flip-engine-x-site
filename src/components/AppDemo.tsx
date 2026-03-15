@@ -2,7 +2,7 @@
 
 /* eslint-disable @next/next/no-img-element */
 
-import { useState, useEffect, useCallback } from "react";
+import { useState, useEffect, useCallback, useRef } from "react";
 
 /* ── Real theme tokens (from lib/uiTheme.ts) ── */
 const t = {
@@ -637,6 +637,7 @@ function RankedMock() {
 export default function AppDemo() {
   const [bookIndex, setBookIndex] = useState(0);
   const [rightScreen, setRightScreen] = useState(0);
+  const mobilePreviewRef = useRef<HTMLDivElement>(null);
 
   const rightScreens = [
     { key: "batch", label: "Batches", color: "#00ff80", tier: "Pro+" },
@@ -678,39 +679,47 @@ export default function AppDemo() {
           </p>
         </div>
 
-        {/* Right screen tabs */}
-        <div className="flex justify-center gap-2 sm:gap-3 mb-10" data-animate>
-          <div className="font-pixel text-[8px] px-3 sm:px-5 py-2 rounded-full flex items-center gap-1.5"
-            style={{
-              background: "rgba(139,92,246,0.20)",
-              border: "1px solid rgba(139,92,246,0.60)",
-              color: "#8B5CF6",
-              boxShadow: "0 0 16px rgba(139,92,246,0.25)",
-            }}
-          >
-            SCANNER
-          </div>
-          <div className="text-[rgba(241,240,255,0.2)] flex items-center font-pixel text-[8px]">+</div>
-          {rightScreens.map((s, i) => (
-            <button
-              key={s.key}
-              onClick={() => setRightScreen(i)}
-              className="font-pixel text-[8px] sm:text-[9px] px-3 sm:px-5 py-2 rounded-full transition-all flex items-center gap-1.5"
+        {/* Right screen tabs — horizontally scrollable on mobile */}
+        <div className="overflow-x-auto -mx-6 px-6 mb-10 scrollbar-hide" data-animate>
+          <div className="flex justify-center gap-2 sm:gap-3 min-w-max mx-auto">
+            <div className="font-pixel text-[8px] px-3 sm:px-5 py-2 rounded-full flex items-center gap-1.5 flex-shrink-0"
               style={{
-                background: rightScreen === i ? `${s.color}20` : "rgba(255,255,255,0.04)",
-                border: `1px solid ${rightScreen === i ? `${s.color}60` : "rgba(255,255,255,0.08)"}`,
-                color: rightScreen === i ? s.color : "rgba(241,240,255,0.4)",
-                boxShadow: rightScreen === i ? `0 0 16px ${s.color}25` : "none",
+                background: "rgba(139,92,246,0.20)",
+                border: "1px solid rgba(139,92,246,0.60)",
+                color: "#8B5CF6",
+                boxShadow: "0 0 16px rgba(139,92,246,0.25)",
               }}
             >
-              {s.label.toUpperCase()}
-              {s.tier && (
-                <span className="text-[6px] px-1.5 py-0.5 rounded-full" style={{ background: "rgba(139,92,246,0.15)", border: "1px solid rgba(139,92,246,0.35)", color: "#C4B5FD" }}>
-                  {s.tier}
-                </span>
-              )}
-            </button>
-          ))}
+              SCANNER
+            </div>
+            <div className="text-[rgba(241,240,255,0.2)] flex items-center font-pixel text-[8px] flex-shrink-0">+</div>
+            {rightScreens.map((s, i) => (
+              <button
+                key={s.key}
+                onClick={() => {
+                  setRightScreen(i);
+                  // On mobile, scroll to the preview phone
+                  setTimeout(() => {
+                    mobilePreviewRef.current?.scrollIntoView({ behavior: "smooth", block: "start" });
+                  }, 50);
+                }}
+                className="font-pixel text-[8px] sm:text-[9px] px-3 sm:px-5 py-2 rounded-full transition-all flex items-center gap-1.5 flex-shrink-0"
+                style={{
+                  background: rightScreen === i ? `${s.color}20` : "rgba(255,255,255,0.04)",
+                  border: `1px solid ${rightScreen === i ? `${s.color}60` : "rgba(255,255,255,0.08)"}`,
+                  color: rightScreen === i ? s.color : "rgba(241,240,255,0.4)",
+                  boxShadow: rightScreen === i ? `0 0 16px ${s.color}25` : "none",
+                }}
+              >
+                {s.label.toUpperCase()}
+                {s.tier && (
+                  <span className="text-[6px] px-1.5 py-0.5 rounded-full" style={{ background: "rgba(139,92,246,0.15)", border: "1px solid rgba(139,92,246,0.35)", color: "#C4B5FD" }}>
+                    {s.tier}
+                  </span>
+                )}
+              </button>
+            ))}
+          </div>
         </div>
 
         {/* Two phones side by side */}
@@ -732,7 +741,7 @@ export default function AppDemo() {
         </div>
 
         {/* Mobile: show right screen below */}
-        <div className="md:hidden mt-8 flex justify-center" data-animate>
+        <div ref={mobilePreviewRef} className="md:hidden mt-8 flex justify-center" data-animate>
           {renderRight()}
         </div>
       </div>
