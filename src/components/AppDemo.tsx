@@ -50,7 +50,7 @@ function PhoneFrame({ children, glow, buyFlash }: { children: React.ReactNode; g
   return (
     <div className="w-full max-w-[340px] mx-auto">
       <div
-        className="rounded-[32px] border bg-[#06050F] p-3 shadow-2xl overflow-hidden relative"
+        className="rounded-[32px] border bg-[#06050F] p-3 shadow-2xl overflow-hidden relative flex flex-col"
         style={{
           boxShadow: buyFlash
             ? "0 0 80px rgba(0,255,128,0.4), 0 0 160px rgba(0,255,128,0.15), 0 25px 50px rgba(0,0,0,0.5)"
@@ -68,12 +68,12 @@ function PhoneFrame({ children, glow, buyFlash }: { children: React.ReactNode; g
             background: "radial-gradient(ellipse at center, rgba(0,255,128,0.12) 0%, transparent 70%)",
           }} />
         )}
-        <div className="flex items-center justify-between px-4 py-2 text-[10px] text-[rgba(241,240,255,0.4)] font-semibold">
+        <div className="flex items-center justify-between px-4 py-2 text-[10px] text-[rgba(241,240,255,0.4)] font-semibold flex-shrink-0">
           <span>9:41</span>
           <div className="w-20 h-5 rounded-full bg-[#111] mx-auto" />
           <span>100%</span>
         </div>
-        <div className="rounded-[20px] overflow-hidden relative" style={{ background: t.bgMid }}>
+        <div className="rounded-[20px] overflow-hidden relative flex-1" style={{ background: t.bgMid }}>
           {children}
           {/* Green tint wash over content */}
           {buyFlash && (
