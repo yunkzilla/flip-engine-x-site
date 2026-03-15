@@ -6,6 +6,7 @@ import Features from "@/components/Features";
 import HowItWorks from "@/components/HowItWorks";
 import Pricing from "@/components/Pricing";
 import AppDemo from "@/components/AppDemo";
+import TeamInfo from "@/components/TeamInfo";
 import Cta from "@/components/Cta";
 import Nav from "@/components/Nav";
 import Footer from "@/components/Footer";
@@ -42,6 +43,7 @@ export default function Page() {
         <Features />
         <HowItWorks />
         <Pricing />
+        <TeamInfo />
         <Cta />
       </div>
       <Footer />
