@@ -200,21 +200,6 @@ export default function Pricing() {
             </div>
           ))}
         </div>
-
-        {/* Add-ons */}
-        <div className="mt-12 text-center" data-animate>
-          <div className="glass-card inline-block px-8 py-5 rounded-2xl">
-            <div className="font-pixel text-[9px] text-[#FDE047] glow-yellow tracking-widest mb-3">ADD-ONS</div>
-            <div className="flex flex-col sm:flex-row gap-6 text-sm text-[rgba(241,240,255,0.6)] font-semibold">
-              <span>
-                <span className="text-[#C4B5FD]">Repricer</span> — $10/mo per 250 products (Pro+)
-              </span>
-              <span>
-                <span className="text-[#C4B5FD]">Team Account</span> — $25/mo per additional seat
-              </span>
-            </div>
-          </div>
-        </div>
       </div>
     </section>
   );
