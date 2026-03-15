@@ -698,9 +698,13 @@ export default function AppDemo() {
                 key={s.key}
                 onClick={() => {
                   setRightScreen(i);
-                  // On mobile, scroll to the preview phone
+                  // On mobile, scroll to the preview phone below the fixed nav
                   setTimeout(() => {
-                    mobilePreviewRef.current?.scrollIntoView({ behavior: "smooth", block: "start" });
+                    const el = mobilePreviewRef.current;
+                    if (el) {
+                      const y = el.getBoundingClientRect().top + window.scrollY - 80;
+                      window.scrollTo({ top: y, behavior: "smooth" });
+                    }
                   }, 50);
                 }}
                 className="font-pixel text-[8px] sm:text-[9px] px-3 sm:px-5 py-2 rounded-full transition-all flex items-center gap-1.5 flex-shrink-0"
