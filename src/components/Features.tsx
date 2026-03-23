@@ -49,6 +49,17 @@ const features = [
   {
     icon: (
       <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#00ff80" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+        <path d="M3 3v18h18"/><path d="M7 17l4-8 4 4 5-9"/>
+      </svg>
+    ),
+    title: "Intrinsic Value",
+    desc: "See the average used price at the moment items actually sold — not just list prices. Cross-references Keepa rank drops with price history over 90-day and 365-day windows so you know what buyers really pay.",
+    color: "#00ff80",
+    tier: null,
+  },
+  {
+    icon: (
+      <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="#00ff80" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
         <line x1="12" y1="1" x2="12" y2="23"/><path d="M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6"/>
       </svg>
     ),
