@@ -74,7 +74,12 @@ export default function WaitlistModal({ open, onClose, initialPlan = "undecided"
 
         {status === "duplicate" ? (
           <div className="text-center py-6">
-            <div className="mb-4"><svg width="40" height="40" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg"><rect x="2" y="1" width="12" height="10" rx="1" fill="#22D3EE" opacity="0.15"/><rect x="3" y="2" width="2" height="2" fill="#22D3EE"/><rect x="11" y="2" width="2" height="2" fill="#22D3EE"/><rect x="5" y="5" width="6" height="1" fill="#22D3EE"/><rect x="4" y="6" width="2" height="1" fill="#22D3EE"/><rect x="7" y="6" width="2" height="1" fill="#22D3EE"/><rect x="10" y="6" width="2" height="1" fill="#22D3EE"/><rect x="2" y="11" width="2" height="3" fill="#22D3EE" opacity="0.6"/><rect x="12" y="11" width="2" height="3" fill="#22D3EE" opacity="0.6"/><rect x="5" y="12" width="2" height="2" fill="#22D3EE" opacity="0.4"/><rect x="9" y="12" width="2" height="2" fill="#22D3EE" opacity="0.4"/></svg></div>
+            <div className="flex justify-center mb-4">
+              <svg width="48" height="48" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <rect x="2" y="2" width="12" height="12" rx="2" fill="#22D3EE" opacity="0.1" stroke="#22D3EE" strokeWidth="0.5"/>
+                <rect x="5" y="5" width="2" height="2" fill="#22D3EE"/><rect x="9" y="5" width="2" height="2" fill="#22D3EE"/><rect x="5" y="9" width="6" height="1" fill="#22D3EE"/><rect x="4" y="8" width="1" height="1" fill="#22D3EE" opacity="0.6"/><rect x="11" y="8" width="1" height="1" fill="#22D3EE" opacity="0.6"/>
+              </svg>
+            </div>
             <div className="font-pixel text-[10px] text-[#22D3EE] glow-cyan tracking-widest mb-3">
               ALREADY REGISTERED
             </div>
@@ -90,7 +95,12 @@ export default function WaitlistModal({ open, onClose, initialPlan = "undecided"
           </div>
         ) : status === "sent" ? (
           <div className="text-center py-6">
-            <div className="mb-4"><svg width="40" height="40" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg"><rect x="1" y="4" width="14" height="8" rx="2" fill="#00ff80" opacity="0.15"/><rect x="3" y="4" width="10" height="8" rx="1" stroke="#00ff80" strokeWidth="0.5" fill="none"/><rect x="3" y="6" width="1" height="3" fill="#00ff80"/><rect x="5" y="6" width="1" height="3" fill="#00ff80"/><rect x="3" y="7" width="3" height="1" fill="#00ff80"/><circle cx="11" cy="7" r="0.7" fill="#00ff80"/><circle cx="13" cy="8" r="0.7" fill="#00ff80"/><rect x="7" y="7" width="2" height="1" rx="0.5" fill="#00ff80" opacity="0.5"/></svg></div>
+            <div className="flex justify-center mb-4">
+              <svg width="48" height="48" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <rect x="2" y="2" width="12" height="12" rx="2" fill="#00ff80" opacity="0.1" stroke="#00ff80" strokeWidth="0.5"/>
+                <rect x="4" y="7" width="2" height="2" fill="#00ff80"/><rect x="6" y="9" width="2" height="2" fill="#00ff80"/><rect x="8" y="7" width="2" height="2" fill="#00ff80"/><rect x="10" y="5" width="2" height="2" fill="#00ff80"/><rect x="6" y="7" width="2" height="2" fill="#00ff80" opacity="0.4"/>
+              </svg>
+            </div>
             <div className="font-pixel text-[10px] text-[#00ff80] glow-green tracking-widest mb-3">
               YOU&apos;RE IN!
             </div>
