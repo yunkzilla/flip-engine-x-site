@@ -1,6 +1,20 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useMemo } from "react";
+
+const APP_LOGIN_URL = "https://app.flipenginex.com/login?returnTo=%2Fplans%3Fplan%3Dstarter%26billing%3Dmonthly";
+
+type Platform = "ios" | "android" | "mac" | "windows" | "other";
+
+function detectPlatform(): Platform {
+  if (typeof navigator === "undefined") return "other";
+  const ua = navigator.userAgent;
+  if (/iPad|iPhone|iPod/.test(ua)) return "ios";
+  if (/Android/.test(ua)) return "android";
+  if (/Macintosh|Mac OS/.test(ua)) return "mac";
+  if (/Windows/.test(ua)) return "windows";
+  return "other";
+}
 
 const PLAN_OPTIONS = [
   { value: "starter", label: "Starter — $19.99/mo" },
@@ -22,6 +36,7 @@ export default function WaitlistModal({ open, onClose, initialPlan = "undecided"
   const [plan, setPlan] = useState(initialPlan);
   const [emailOptIn, setEmailOptIn] = useState(true);
   const [status, setStatus] = useState<"idle" | "sending" | "sent" | "duplicate" | "error">("idle");
+  const platform = useMemo(() => detectPlatform(), []);
 
   useEffect(() => {
     if (open) {
@@ -84,33 +99,7 @@ export default function WaitlistModal({ open, onClose, initialPlan = "undecided"
               We&apos;ll notify you when it&apos;s time to flip.
             </p>
 
-            <div className="font-pixel text-[8px] text-[rgba(241,240,255,0.4)] tracking-widest mb-3">
-              START YOUR FREE TRIAL NOW
-            </div>
-            <div className="flex flex-col gap-3">
-              <a
-                href="https://app.flipenginex.com/login?returnTo=%2Fplans%3Fplan%3Dstarter%26billing%3Dmonthly"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="cta-btn cta-btn-green w-full justify-center"
-              >
-                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
-                  <rect x="5" y="2" width="14" height="20" rx="2" ry="2"/><line x1="12" y1="18" x2="12.01" y2="18"/>
-                </svg>
-                Install App (PWA)
-              </a>
-              <a
-                href="https://app.flipenginex.com/login?returnTo=%2Fplans%3Fplan%3Dstarter%26billing%3Dmonthly"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="cta-btn cta-btn-primary w-full justify-center"
-              >
-                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
-                  <rect x="2" y="3" width="20" height="14" rx="2" ry="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/>
-                </svg>
-                Use in Browser
-              </a>
-            </div>
+            <TrialCTAs platform={platform} />
           </div>
         ) : status === "sent" ? (
           <div className="text-center py-6">
@@ -129,36 +118,7 @@ export default function WaitlistModal({ open, onClose, initialPlan = "undecided"
               <FoundersBadgePreview />
             </div>
 
-            <div className="font-pixel text-[8px] text-[rgba(241,240,255,0.4)] tracking-widest mb-3">
-              START YOUR FREE TRIAL NOW
-            </div>
-            <div className="flex flex-col gap-3">
-              <a
-                href="https://app.flipenginex.com/login?returnTo=%2Fplans%3Fplan%3Dstarter%26billing%3Dmonthly"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="cta-btn cta-btn-green w-full justify-center"
-              >
-                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
-                  <rect x="5" y="2" width="14" height="20" rx="2" ry="2"/><line x1="12" y1="18" x2="12.01" y2="18"/>
-                </svg>
-                Install App (PWA)
-              </a>
-              <a
-                href="https://app.flipenginex.com/login?returnTo=%2Fplans%3Fplan%3Dstarter%26billing%3Dmonthly"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="cta-btn cta-btn-primary w-full justify-center"
-              >
-                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
-                  <rect x="2" y="3" width="20" height="14" rx="2" ry="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/>
-                </svg>
-                Use in Browser
-              </a>
-            </div>
-            <p className="text-[10px] text-[rgba(241,240,255,0.25)] mt-3">
-              Both options open the Flip Engine X app — install for the best experience.
-            </p>
+            <TrialCTAs platform={platform} />
           </div>
         ) : (
           <>
@@ -285,6 +245,76 @@ export default function WaitlistModal({ open, onClose, initialPlan = "undecided"
         )}
       </div>
     </div>
+  );
+}
+
+/* Platform-aware trial CTAs */
+function TrialCTAs({ platform }: { platform: Platform }) {
+  const isMobile = platform === "ios" || platform === "android";
+
+  const installLabel = platform === "ios"
+    ? "Install App — Add to Home Screen"
+    : platform === "android"
+      ? "Install App — Add to Home Screen"
+      : platform === "mac"
+        ? "Install App — Mac (Chrome)"
+        : platform === "windows"
+          ? "Install App — Windows (Chrome/Edge)"
+          : "Install App (PWA)";
+
+  const installHint = platform === "ios"
+    ? "Open in Safari, tap the share button ↑ then \"Add to Home Screen\""
+    : platform === "android"
+      ? "Open in Chrome, tap ⋮ menu → \"Install app\" or \"Add to Home Screen\""
+      : platform === "mac"
+        ? "Open in Chrome, click the install icon in the address bar"
+        : platform === "windows"
+          ? "Open in Chrome or Edge, click the install icon in the address bar"
+          : "Open in Chrome and install from the address bar";
+
+  return (
+    <>
+      <div className="font-pixel text-[8px] text-[rgba(241,240,255,0.4)] tracking-widest mb-3">
+        START YOUR FREE TRIAL NOW
+      </div>
+      <div className="flex flex-col gap-3">
+        <a
+          href={APP_LOGIN_URL}
+          target="_blank"
+          rel="noopener noreferrer"
+          className="cta-btn cta-btn-green w-full justify-center"
+        >
+          {isMobile ? (
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+              <rect x="5" y="2" width="14" height="20" rx="2" ry="2"/><line x1="12" y1="18" x2="12.01" y2="18"/>
+            </svg>
+          ) : (
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+              <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/>
+            </svg>
+          )}
+          {installLabel}
+        </a>
+        <a
+          href={APP_LOGIN_URL}
+          target="_blank"
+          rel="noopener noreferrer"
+          className="cta-btn cta-btn-primary w-full justify-center"
+        >
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+            {isMobile ? (
+              <><rect x="5" y="2" width="14" height="20" rx="2" ry="2"/><line x1="12" y1="18" x2="12.01" y2="18"/></>
+            ) : (
+              <><rect x="2" y="3" width="20" height="14" rx="2" ry="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></>
+            )}
+          </svg>
+          Use in Browser
+        </a>
+      </div>
+      <p className="text-[10px] text-[rgba(241,240,255,0.25)] mt-3 leading-relaxed">
+        {installHint}
+      </p>
+    </>
   );
 }
 
