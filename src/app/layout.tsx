@@ -6,7 +6,7 @@ const inter = Inter({ subsets: ["latin"], variable: "--font-inter" });
 const pressStart = Press_Start_2P({ weight: "400", subsets: ["latin"], variable: "--font-pixel" });
 
 export const metadata: Metadata = {
-  title: "Flip Engine X — The Fastest FBA Book Scanning App for Amazon Resellers",
+  title: "Flip Engine X — The All-in-One FBA Scanning & Sourcing App for Amazon Resellers",
   description:
     "Scan barcodes, pull Keepa data, calculate profit, check gating, and batch your FBA inventory — all from one app. Built by resellers for resellers. The best alternative to ScoutIQ, ScoutLY, and Go2Lister.",
   keywords: [
@@ -53,7 +53,7 @@ export const metadata: Metadata = {
     locale: "en_US",
     url: "https://flipenginex.com",
     siteName: "Flip Engine X",
-    title: "Flip Engine X — The Fastest FBA Book Scanning App",
+    title: "Flip Engine X — All-in-One FBA Scanning & Sourcing App",
     description:
       "Scan barcodes, pull Keepa data, calculate profit, check gating, and batch your FBA inventory. Built by resellers for resellers. Better than ScoutIQ, ScoutLY, and Go2Lister.",
     images: [
@@ -67,7 +67,7 @@ export const metadata: Metadata = {
   },
   twitter: {
     card: "summary_large_image",
-    title: "Flip Engine X — Fastest FBA Scanner",
+    title: "Flip Engine X — All-in-One FBA Scanner",
     description:
       "Scan barcodes, pull Keepa data, calculate profit. The best FBA scanning app for Amazon book resellers.",
     images: ["/og-image.png"],
