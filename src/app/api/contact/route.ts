@@ -1,4 +1,5 @@
 import { NextResponse } from "next/server";
+import nodemailer from "nodemailer";
 
 export async function POST(req: Request) {
   try {
@@ -8,49 +9,43 @@ export async function POST(req: Request) {
       return NextResponse.json({ error: "All fields are required" }, { status: 400 });
     }
 
-    // Send via Resend, Mailgun, or similar — for now use a simple fetch to a mailto-compatible endpoint
-    // Using Vercel's built-in email or a simple SMTP relay
-    // For MVP: forward to info@flipenginex.com using a free email API
+    const gmailUser = process.env.GMAIL_USER;
+    const gmailPass = process.env.GMAIL_APP_PASSWORD;
 
-    // Option: Use Formspree, Resend, or similar. For now, we'll store in a simple format
-    // and you can connect an email provider later.
-
-    // Basic email sending via Resend (if RESEND_API_KEY is set)
-    const resendKey = process.env.RESEND_API_KEY;
-
-    if (resendKey) {
-      const res = await fetch("https://api.resend.com/emails", {
-        method: "POST",
-        headers: {
-          Authorization: `Bearer ${resendKey}`,
-          "Content-Type": "application/json",
+    if (gmailUser && gmailPass) {
+      const transporter = nodemailer.createTransport({
+        service: "gmail",
+        auth: {
+          user: gmailUser,
+          pass: gmailPass,
         },
-        body: JSON.stringify({
-          from: "Flip Engine X <noreply@flipenginex.com>",
-          to: "info@flipenginex.com",
-          reply_to: email,
-          subject: `[Contact] ${subject} — ${name}`,
-          text: `Name: ${name}\nEmail: ${email}\nSubject: ${subject}\n\nMessage:\n${message}`,
-        }),
       });
 
-      if (!res.ok) {
-        console.error("Resend error:", await res.text());
-        return NextResponse.json({ error: "Failed to send" }, { status: 500 });
-      }
+      await transporter.sendMail({
+        from: `"Flip Engine X" <${gmailUser}>`,
+        to: gmailUser,
+        replyTo: email,
+        subject: `[Contact] ${subject} — ${name}`,
+        text: `Name: ${name}\nEmail: ${email}\nSubject: ${subject}\n\nMessage:\n${message}`,
+        html: `
+          <div style="font-family: sans-serif; max-width: 600px;">
+            <h2 style="color: #8B5CF6;">New Contact Form Submission</h2>
+            <p><strong>Name:</strong> ${name}</p>
+            <p><strong>Email:</strong> <a href="mailto:${email}">${email}</a></p>
+            <p><strong>Subject:</strong> ${subject}</p>
+            <hr style="border: 1px solid #eee;" />
+            <p style="white-space: pre-wrap;">${message}</p>
+          </div>
+        `,
+      });
     } else {
-      // Fallback: log to console (you'll see this in Vercel logs)
-      console.log("=== CONTACT FORM SUBMISSION ===");
-      console.log(`Name: ${name}`);
-      console.log(`Email: ${email}`);
-      console.log(`Subject: ${subject}`);
-      console.log(`Message: ${message}`);
-      console.log("===============================");
-      // Still return success — messages are captured in Vercel logs
+      // Fallback: log to Vercel console
+      console.log("=== CONTACT FORM ===", { name, email, subject, message });
     }
 
     return NextResponse.json({ success: true });
-  } catch {
+  } catch (err) {
+    console.error("Contact form error:", err);
     return NextResponse.json({ error: "Server error" }, { status: 500 });
   }
 }
