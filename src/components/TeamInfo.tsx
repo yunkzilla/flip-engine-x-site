@@ -42,10 +42,10 @@ const teamFeatures = [
 ];
 
 const seatTable = [
-  { plan: "Starter", included: "—", addon: "—", color: "rgba(241,240,255,0.3)", active: false },
-  { plan: "Pro", included: "—", addon: "—", color: "rgba(241,240,255,0.3)", active: false },
-  { plan: "Elite", included: "1", addon: "+1 each", color: "#22D3EE", active: true },
-  { plan: "Enterprise", included: "5", addon: "+1 each", color: "#C4B5FD", active: true },
+  { plan: "Starter", included: "—", addon: "$15/mo each", color: "#00ff80", active: true },
+  { plan: "Pro", included: "—", addon: "$35/mo each", color: "#8B5CF6", active: true },
+  { plan: "Elite", included: "1", addon: "$35/mo each", color: "#22D3EE", active: true },
+  { plan: "Enterprise", included: "5", addon: "$35/mo each", color: "#C4B5FD", active: true },
 ];
 
 export default function TeamInfo() {
@@ -53,8 +53,8 @@ export default function TeamInfo() {
   const [teamExpanded, setTeamExpanded] = useState(false);
 
   return (
-    <section className="parallax-section py-8 sm:py-12 px-6">
-      <div className="max-w-5xl mx-auto" data-animate>
+    <section className="parallax-section pt-0 pb-16 sm:pb-24 px-6">
+      <div className="max-w-6xl mx-auto" data-animate>
         <div className="glass-card rounded-2xl overflow-hidden" style={{ border: "1px solid rgba(139,92,246,0.15)" }}>
           {/* Header with tabs */}
           <div className="flex items-center justify-between p-5 sm:p-6" style={{ borderBottom: "1px solid rgba(139,92,246,0.1)" }}>
@@ -145,8 +145,8 @@ export default function TeamInfo() {
                     <div>
                       <div className="font-bold text-[#F1F0FF] text-base">Team Account</div>
                       <div className="flex items-baseline gap-1.5 mt-0.5">
-                        <span className="text-lg font-black text-[#C4B5FD]">$25</span>
-                        <span className="text-xs text-[rgba(241,240,255,0.4)] font-semibold">/mo per additional seat</span>
+                        <span className="text-lg font-black text-[#C4B5FD]">From $15</span>
+                        <span className="text-xs text-[rgba(241,240,255,0.4)] font-semibold">/mo per seat</span>
                       </div>
                     </div>
                   </div>
