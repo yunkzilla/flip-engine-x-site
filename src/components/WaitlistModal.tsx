@@ -20,7 +20,8 @@ export default function WaitlistModal({ open, onClose, initialPlan = "undecided"
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [plan, setPlan] = useState(initialPlan);
-  const [status, setStatus] = useState<"idle" | "sending" | "sent" | "error">("idle");
+  const [emailOptIn, setEmailOptIn] = useState(true);
+  const [status, setStatus] = useState<"idle" | "sending" | "sent" | "duplicate" | "error">("idle");
 
   useEffect(() => {
     if (open) {
@@ -41,11 +42,12 @@ export default function WaitlistModal({ open, onClose, initialPlan = "undecided"
       const res = await fetch("/api/waitlist", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ name: name.trim(), email: email.trim(), plan }),
+        body: JSON.stringify({ name: name.trim(), email: email.trim(), plan, emailOptIn }),
       });
 
       if (!res.ok) throw new Error("Failed");
-      setStatus("sent");
+      const data = await res.json();
+      setStatus(data.duplicate ? "duplicate" : "sent");
     } catch {
       setStatus("error");
     }
@@ -68,7 +70,49 @@ export default function WaitlistModal({ open, onClose, initialPlan = "undecided"
           </svg>
         </button>
 
-        {status === "sent" ? (
+        {status === "duplicate" ? (
+          <div className="text-center py-6">
+            <div className="text-4xl mb-4">👾</div>
+            <div className="font-pixel text-[10px] text-[#22D3EE] glow-cyan tracking-widest mb-3">
+              ALREADY REGISTERED
+            </div>
+            <h3 className="text-xl font-black text-[#F1F0FF] mb-2">
+              You&apos;re Already on the List
+            </h3>
+            <p className="text-sm text-[rgba(241,240,255,0.55)] mb-6">
+              This email is already signed up for early access.
+              We&apos;ll notify you when it&apos;s time to flip.
+            </p>
+
+            <div className="font-pixel text-[8px] text-[rgba(241,240,255,0.4)] tracking-widest mb-3">
+              START YOUR FREE TRIAL NOW
+            </div>
+            <div className="flex flex-col gap-3">
+              <a
+                href="https://app.flipenginex.com/plans?plan=starter&billing=monthly"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="cta-btn cta-btn-green w-full justify-center"
+              >
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+                  <rect x="5" y="2" width="14" height="20" rx="2" ry="2"/><line x1="12" y1="18" x2="12.01" y2="18"/>
+                </svg>
+                Install App (PWA)
+              </a>
+              <a
+                href="https://app.flipenginex.com/plans?plan=starter&billing=monthly"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="cta-btn cta-btn-primary w-full justify-center"
+              >
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+                  <rect x="2" y="3" width="20" height="14" rx="2" ry="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/>
+                </svg>
+                Use in Browser
+              </a>
+            </div>
+          </div>
+        ) : status === "sent" ? (
           <div className="text-center py-6">
             <div className="text-4xl mb-4">🎮</div>
             <div className="font-pixel text-[10px] text-[#00ff80] glow-green tracking-widest mb-3">
@@ -190,6 +234,18 @@ export default function WaitlistModal({ open, onClose, initialPlan = "undecided"
                   ))}
                 </select>
               </div>
+
+              <label className="flex items-start gap-3 cursor-pointer">
+                <input
+                  type="checkbox"
+                  checked={emailOptIn}
+                  onChange={(e) => setEmailOptIn(e.target.checked)}
+                  className="mt-0.5 w-4 h-4 rounded accent-[#8B5CF6] shrink-0"
+                />
+                <span className="text-xs text-[rgba(241,240,255,0.45)] leading-relaxed">
+                  I agree to receive email updates about Flip Engine X, including launch announcements, feature updates, and exclusive offers. You can unsubscribe at any time.
+                </span>
+              </label>
 
               {status === "error" && (
                 <p className="text-xs text-[#ef4444] text-center">

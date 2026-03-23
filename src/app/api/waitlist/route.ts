@@ -2,7 +2,7 @@ import { NextRequest, NextResponse } from "next/server";
 
 export async function POST(req: NextRequest) {
   try {
-    const { name, email, plan } = await req.json();
+    const { name, email, plan, emailOptIn } = await req.json();
 
     if (!name?.trim() || !email?.trim()) {
       return NextResponse.json({ error: "Name and email are required" }, { status: 400 });
@@ -16,8 +16,9 @@ export async function POST(req: NextRequest) {
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
           name: name.trim(),
-          email: email.trim(),
+          email: email.trim().toLowerCase(),
           plan: plan || "undecided",
+          emailOptIn: !!emailOptIn,
           timestamp: new Date().toISOString(),
           source: "website",
         }),
@@ -25,10 +26,21 @@ export async function POST(req: NextRequest) {
 
       if (!res.ok) {
         console.error("Google Sheet webhook failed:", res.status);
+        return NextResponse.json({ success: true });
+      }
+
+      const data = await res.json();
+      if (data.duplicate) {
+        return NextResponse.json({ success: true, duplicate: true });
       }
     } else {
-      // Fallback: log to Vercel console (visible in Vercel logs)
-      console.log("[WAITLIST]", { name: name.trim(), email: email.trim(), plan: plan || "undecided", timestamp: new Date().toISOString() });
+      console.log("[WAITLIST]", {
+        name: name.trim(),
+        email: email.trim().toLowerCase(),
+        plan: plan || "undecided",
+        emailOptIn: !!emailOptIn,
+        timestamp: new Date().toISOString(),
+      });
     }
 
     return NextResponse.json({ success: true });

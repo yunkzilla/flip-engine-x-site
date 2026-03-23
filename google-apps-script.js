@@ -3,7 +3,7 @@
  *
  * SETUP:
  * 1. Create a new Google Sheet (name it "Flip Engine X Waitlist")
- * 2. Add headers in row 1: Name | Email | Plan | Timestamp | Source
+ * 2. Add headers in row 1: Name | Email | Plan | Email Opt-In | Timestamp | Source
  * 3. Go to Extensions → Apps Script
  * 4. Paste this entire script and save
  * 5. Click Deploy → New deployment
@@ -18,17 +18,29 @@ function doPost(e) {
   try {
     var sheet = SpreadsheetApp.getActiveSpreadsheet().getActiveSheet();
     var data = JSON.parse(e.postData.contents);
+    var email = (data.email || "").toLowerCase().trim();
+
+    // Check for duplicate email
+    var emails = sheet.getRange("B:B").getValues();
+    for (var i = 0; i < emails.length; i++) {
+      if (emails[i][0].toString().toLowerCase().trim() === email) {
+        return ContentService
+          .createTextOutput(JSON.stringify({ success: true, duplicate: true }))
+          .setMimeType(ContentService.MimeType.JSON);
+      }
+    }
 
     sheet.appendRow([
       data.name || "",
-      data.email || "",
+      email,
       data.plan || "undecided",
+      data.emailOptIn ? "Yes" : "No",
       data.timestamp || new Date().toISOString(),
       data.source || "unknown",
     ]);
 
     return ContentService
-      .createTextOutput(JSON.stringify({ success: true }))
+      .createTextOutput(JSON.stringify({ success: true, duplicate: false }))
       .setMimeType(ContentService.MimeType.JSON);
   } catch (err) {
     return ContentService
