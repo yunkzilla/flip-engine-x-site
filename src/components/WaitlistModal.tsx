@@ -1,20 +1,8 @@
 "use client";
 
-import { useState, useEffect, useMemo } from "react";
+import { useState, useEffect } from "react";
 
 const APP_LOGIN_URL = "https://app.flipenginex.com/login?returnTo=%2Fplans%3Fplan%3Dstarter%26billing%3Dmonthly";
-
-type Platform = "ios" | "android" | "mac" | "windows" | "other";
-
-function detectPlatform(): Platform {
-  if (typeof navigator === "undefined") return "other";
-  const ua = navigator.userAgent;
-  if (/iPad|iPhone|iPod/.test(ua)) return "ios";
-  if (/Android/.test(ua)) return "android";
-  if (/Macintosh|Mac OS/.test(ua)) return "mac";
-  if (/Windows/.test(ua)) return "windows";
-  return "other";
-}
 
 const PLAN_OPTIONS = [
   { value: "starter", label: "Starter — $19.99/mo" },
@@ -36,7 +24,6 @@ export default function WaitlistModal({ open, onClose, initialPlan = "undecided"
   const [plan, setPlan] = useState(initialPlan);
   const [emailOptIn, setEmailOptIn] = useState(true);
   const [status, setStatus] = useState<"idle" | "sending" | "sent" | "duplicate" | "error">("idle");
-  const platform = useMemo(() => detectPlatform(), []);
 
   useEffect(() => {
     if (open) {
@@ -99,7 +86,7 @@ export default function WaitlistModal({ open, onClose, initialPlan = "undecided"
               We&apos;ll notify you when it&apos;s time to flip.
             </p>
 
-            <TrialCTAs platform={platform} />
+            <TrialCTAs />
           </div>
         ) : status === "sent" ? (
           <div className="text-center py-6">
@@ -118,7 +105,7 @@ export default function WaitlistModal({ open, onClose, initialPlan = "undecided"
               <FoundersBadgePreview />
             </div>
 
-            <TrialCTAs platform={platform} />
+            <TrialCTAs />
           </div>
         ) : (
           <>
@@ -249,19 +236,7 @@ export default function WaitlistModal({ open, onClose, initialPlan = "undecided"
 }
 
 /* Platform-aware trial CTAs */
-function TrialCTAs({ platform }: { platform: Platform }) {
-  const isMobile = platform === "ios" || platform === "android";
-
-  const installHint = platform === "ios"
-    ? "Tap the share button ↑ then \"Add to Home Screen\" to install the app."
-    : platform === "android"
-      ? "Tap the ⋮ menu → \"Install app\" to add it to your home screen."
-      : platform === "mac"
-        ? "In Chrome: ⋮ menu → Cast, save, and share → Install page as app."
-        : platform === "windows"
-          ? "In Chrome or Edge: ⋮ menu → Cast, save, and share → Install page as app."
-          : "In Chrome: ⋮ menu → Cast, save, and share → Install page as app.";
-
+function TrialCTAs() {
   return (
     <>
       <div className="font-pixel text-[8px] text-[rgba(241,240,255,0.4)] tracking-widest mb-3">
@@ -276,19 +251,12 @@ function TrialCTAs({ platform }: { platform: Platform }) {
         <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
           <path d="M5 12h14" /><path d="m12 5 7 7-7 7" />
         </svg>
-        {isMobile ? "Open App" : "Open App in Browser"}
+        Create Account &amp; Start Trial
       </a>
-      <p className="text-[11px] text-[rgba(241,240,255,0.35)] mt-3 leading-relaxed">
-        Don&apos;t have an account? You can create one on the next screen.
+      <p className="text-[11px] text-[rgba(241,240,255,0.4)] mt-3 leading-relaxed">
+        You&apos;ll be able to install the app after signing up.
+        Already have an account? You can sign in on the next screen.
       </p>
-      <div className="mt-3 px-4 py-3 rounded-xl text-left" style={{ background: "rgba(139,92,246,0.08)", border: "1px solid rgba(139,92,246,0.2)" }}>
-        <div className="font-pixel text-[7px] text-[#C4B5FD] tracking-wider mb-1.5">
-          {isMobile ? "INSTALL AS APP" : platform === "mac" ? "INSTALL ON MAC" : platform === "windows" ? "INSTALL ON WINDOWS" : "INSTALL AS APP"}
-        </div>
-        <p className="text-[11px] text-[rgba(241,240,255,0.45)] leading-relaxed">
-          {installHint}
-        </p>
-      </div>
     </>
   );
 }
