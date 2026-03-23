@@ -52,9 +52,9 @@ export default function Faq() {
     <section id="faq" className="parallax-section py-16 sm:py-24 px-6">
       <div className="max-w-3xl mx-auto">
         <div className="text-center mb-12" data-animate>
-          <div className="font-pixel text-[9px] text-[#22D3EE] glow-cyan tracking-widest mb-4">FAQ</div>
+          <div className="font-pixel text-[9px] text-[#FDE047] glow-yellow tracking-widest mb-4">FAQ</div>
           <h2 className="text-3xl sm:text-5xl font-black text-[#F1F0FF] mb-4">
-            Frequently Asked <span className="text-[#8B5CF6]">Questions</span>
+            Got <span className="text-[#8B5CF6]">Questions</span>?
           </h2>
           <p className="max-w-lg mx-auto text-[rgba(241,240,255,0.55)] text-lg">
             Everything you need to know about the best FBA book scanning app.
@@ -62,33 +62,69 @@ export default function Faq() {
         </div>
 
         <div className="space-y-3" data-animate>
-          {faqs.map((faq, i) => (
-            <div
-              key={i}
-              className="glass-card rounded-xl overflow-hidden transition-all"
-              style={{ border: openIndex === i ? "1px solid rgba(139,92,246,0.35)" : undefined }}
-            >
-              <button
-                onClick={() => setOpenIndex(openIndex === i ? null : i)}
-                className="w-full text-left px-5 py-4 flex items-center justify-between gap-4"
-                style={{ cursor: "pointer", background: "none", border: "none", color: "#F1F0FF" }}
+          {faqs.map((faq, i) => {
+            const isOpen = openIndex === i;
+            const colors = [
+              { accent: "#8B5CF6", glow: "rgba(139,92,246,0.3)" },
+              { accent: "#22D3EE", glow: "rgba(34,211,238,0.3)" },
+              { accent: "#00ff80", glow: "rgba(0,255,128,0.3)" },
+              { accent: "#FDE047", glow: "rgba(253,224,71,0.3)" },
+              { accent: "#C4B5FD", glow: "rgba(196,181,253,0.3)" },
+            ];
+            const c = colors[i % colors.length];
+
+            return (
+              <div
+                key={i}
+                className={`glass-card rounded-xl overflow-hidden transition-all duration-300 ${isOpen ? "laser-border" : ""}`}
+                style={{
+                  border: isOpen ? undefined : "1px solid rgba(139,92,246,0.08)",
+                  boxShadow: isOpen ? `0 0 20px ${c.glow}` : "none",
+                }}
               >
-                <span className="text-sm font-bold leading-relaxed">{faq.q}</span>
-                <svg
-                  width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="rgba(139,92,246,0.6)"
-                  strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"
-                  style={{ transform: openIndex === i ? "rotate(180deg)" : "rotate(0deg)", transition: "transform 0.3s ease", flexShrink: 0 }}
+                <button
+                  onClick={() => setOpenIndex(isOpen ? null : i)}
+                  className="w-full text-left px-5 py-4 flex items-center gap-4"
+                  style={{ cursor: "pointer", background: "none", border: "none", color: "#F1F0FF" }}
                 >
-                  <polyline points="6 9 12 15 18 9" />
-                </svg>
-              </button>
-              {openIndex === i && (
-                <div className="px-5 pb-4">
-                  <p className="text-sm text-[rgba(241,240,255,0.55)] leading-relaxed">{faq.a}</p>
-                </div>
-              )}
-            </div>
-          ))}
+                  {/* Pixel number badge */}
+                  <span
+                    className="font-pixel text-[8px] shrink-0 w-7 h-7 rounded-lg flex items-center justify-center"
+                    style={{
+                      background: isOpen ? `${c.accent}20` : "rgba(255,255,255,0.03)",
+                      border: `1px solid ${isOpen ? `${c.accent}50` : "rgba(255,255,255,0.06)"}`,
+                      color: isOpen ? c.accent : "rgba(241,240,255,0.25)",
+                    }}
+                  >
+                    {String(i + 1).padStart(2, "0")}
+                  </span>
+                  <span className="text-sm font-bold leading-relaxed flex-1">{faq.q}</span>
+                  <svg
+                    width="14" height="14" viewBox="0 0 24 24" fill="none"
+                    stroke={isOpen ? c.accent : "rgba(241,240,255,0.2)"}
+                    strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"
+                    className="shrink-0"
+                    style={{ transform: isOpen ? "rotate(180deg)" : "rotate(0deg)", transition: "transform 0.3s ease" }}
+                  >
+                    <polyline points="6 9 12 15 18 9" />
+                  </svg>
+                </button>
+                {isOpen && (
+                  <div className="px-5 pb-5 fade-in-up" style={{ paddingLeft: 56 }}>
+                    <div
+                      className="rounded-lg px-4 py-3"
+                      style={{
+                        background: `${c.accent}06`,
+                        borderLeft: `2px solid ${c.accent}40`,
+                      }}
+                    >
+                      <p className="text-sm text-[rgba(241,240,255,0.6)] leading-relaxed">{faq.a}</p>
+                    </div>
+                  </div>
+                )}
+              </div>
+            );
+          })}
         </div>
       </div>
     </section>
