@@ -88,8 +88,7 @@ export const metadata: Metadata = {
     apple: "/icon-x-192.png",
   },
   verification: {
-    // Add your Google Search Console verification code here after setup
-    // google: "your-verification-code",
+    google: "QjwrkI4xxTCM5-qUgM0hsu_JE1ryBqLdEL_W_lm8qzI",
   },
 };
 
