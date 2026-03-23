@@ -3,8 +3,6 @@
 import { useState } from "react";
 import WaitlistModal from "./WaitlistModal";
 
-const APP_URL = "https://app.flipenginex.com";
-
 const plans = [
   {
     name: "STARTER",
@@ -108,14 +106,6 @@ export default function Pricing() {
     setShowWaitlist(true);
   }
 
-  function handleWaitlistSuccess() {
-    setShowWaitlist(false);
-    // Redirect to app for Starter trial after waitlist signup
-    window.open(
-      `${APP_URL}/plans?plan=starter&billing=${annual ? "annual" : "monthly"}`,
-      "_blank"
-    );
-  }
 
   return (
     <>
@@ -282,7 +272,6 @@ export default function Pricing() {
       <WaitlistModal
         open={showWaitlist}
         onClose={() => setShowWaitlist(false)}
-        onSuccess={handleWaitlistSuccess}
         initialPlan={waitlistPlan}
       />
     </>

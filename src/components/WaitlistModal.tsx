@@ -13,11 +13,10 @@ const PLAN_OPTIONS = [
 interface WaitlistModalProps {
   open: boolean;
   onClose: () => void;
-  onSuccess: () => void;
   initialPlan?: string;
 }
 
-export default function WaitlistModal({ open, onClose, onSuccess, initialPlan = "undecided" }: WaitlistModalProps) {
+export default function WaitlistModal({ open, onClose, initialPlan = "undecided" }: WaitlistModalProps) {
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [plan, setPlan] = useState(initialPlan);
@@ -38,7 +37,6 @@ export default function WaitlistModal({ open, onClose, onSuccess, initialPlan = 
 
       if (!res.ok) throw new Error("Failed");
       setStatus("sent");
-      setTimeout(() => onSuccess(), 2000);
     } catch {
       setStatus("error");
     }
@@ -74,9 +72,40 @@ export default function WaitlistModal({ open, onClose, onSuccess, initialPlan = 
               We&apos;ll notify you when early access drops in April.
               Founders get an exclusive achievement badge.
             </p>
-            <div className="inline-block">
+            <div className="inline-block mb-6">
               <FoundersBadgePreview />
             </div>
+
+            <div className="font-pixel text-[8px] text-[rgba(241,240,255,0.4)] tracking-widest mb-3">
+              START YOUR FREE TRIAL NOW
+            </div>
+            <div className="flex flex-col gap-3">
+              <a
+                href="https://app.flipenginex.com/plans?plan=starter&billing=monthly"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="cta-btn cta-btn-green w-full justify-center"
+              >
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+                  <rect x="5" y="2" width="14" height="20" rx="2" ry="2"/><line x1="12" y1="18" x2="12.01" y2="18"/>
+                </svg>
+                Install App (PWA)
+              </a>
+              <a
+                href="https://app.flipenginex.com/plans?plan=starter&billing=monthly"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="cta-btn cta-btn-primary w-full justify-center"
+              >
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+                  <rect x="2" y="3" width="20" height="14" rx="2" ry="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/>
+                </svg>
+                Use in Browser
+              </a>
+            </div>
+            <p className="text-[10px] text-[rgba(241,240,255,0.25)] mt-3">
+              Both options open the Flip Engine X app — install for the best experience.
+            </p>
           </div>
         ) : (
           <>

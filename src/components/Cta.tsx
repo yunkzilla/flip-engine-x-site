@@ -3,15 +3,8 @@
 import { useState } from "react";
 import WaitlistModal from "./WaitlistModal";
 
-const APP_URL = "https://app.flipenginex.com";
-
 export default function Cta() {
   const [showWaitlist, setShowWaitlist] = useState(false);
-
-  function handleSuccess() {
-    setShowWaitlist(false);
-    window.open(`${APP_URL}/plans?plan=starter&billing=monthly`, "_blank");
-  }
 
   return (
     <>
@@ -67,7 +60,6 @@ export default function Cta() {
       <WaitlistModal
         open={showWaitlist}
         onClose={() => setShowWaitlist(false)}
-        onSuccess={handleSuccess}
       />
     </>
   );
