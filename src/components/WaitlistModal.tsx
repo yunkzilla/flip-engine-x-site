@@ -89,7 +89,7 @@ export default function WaitlistModal({ open, onClose, initialPlan = "undecided"
             </div>
             <div className="flex flex-col gap-3">
               <a
-                href="https://app.flipenginex.com/plans?plan=starter&billing=monthly"
+                href="https://app.flipenginex.com/login?returnTo=%2Fplans%3Fplan%3Dstarter%26billing%3Dmonthly"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="cta-btn cta-btn-green w-full justify-center"
@@ -100,7 +100,7 @@ export default function WaitlistModal({ open, onClose, initialPlan = "undecided"
                 Install App (PWA)
               </a>
               <a
-                href="https://app.flipenginex.com/plans?plan=starter&billing=monthly"
+                href="https://app.flipenginex.com/login?returnTo=%2Fplans%3Fplan%3Dstarter%26billing%3Dmonthly"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="cta-btn cta-btn-primary w-full justify-center"
@@ -134,7 +134,7 @@ export default function WaitlistModal({ open, onClose, initialPlan = "undecided"
             </div>
             <div className="flex flex-col gap-3">
               <a
-                href="https://app.flipenginex.com/plans?plan=starter&billing=monthly"
+                href="https://app.flipenginex.com/login?returnTo=%2Fplans%3Fplan%3Dstarter%26billing%3Dmonthly"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="cta-btn cta-btn-green w-full justify-center"
@@ -145,7 +145,7 @@ export default function WaitlistModal({ open, onClose, initialPlan = "undecided"
                 Install App (PWA)
               </a>
               <a
-                href="https://app.flipenginex.com/plans?plan=starter&billing=monthly"
+                href="https://app.flipenginex.com/login?returnTo=%2Fplans%3Fplan%3Dstarter%26billing%3Dmonthly"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="cta-btn cta-btn-primary w-full justify-center"
