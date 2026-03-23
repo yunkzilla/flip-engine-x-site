@@ -1,52 +1,74 @@
+"use client";
+
+import { useState } from "react";
+import WaitlistModal from "./WaitlistModal";
+
+const APP_URL = "https://app.flipenginex.com";
+
 export default function Cta() {
+  const [showWaitlist, setShowWaitlist] = useState(false);
+
+  function handleSuccess() {
+    setShowWaitlist(false);
+    window.open(`${APP_URL}/plans?plan=starter&billing=monthly`, "_blank");
+  }
+
   return (
-    <section className="parallax-section py-16 sm:py-24 px-6">
-      <div className="max-w-3xl mx-auto text-center" data-animate>
-        <div className="glass-card laser-border rounded-3xl p-10 sm:p-16">
-          <div className="font-pixel text-[9px] text-[#22D3EE] glow-cyan tracking-widest mb-6 breathe">
-            READY TO FLIP?
-          </div>
+    <>
+      <section className="parallax-section py-16 sm:py-24 px-6">
+        <div className="max-w-3xl mx-auto text-center" data-animate>
+          <div className="glass-card laser-border rounded-3xl p-10 sm:p-16">
+            <div className="font-pixel text-[9px] text-[#22D3EE] glow-cyan tracking-widest mb-6 breathe">
+              READY TO FLIP?
+            </div>
 
-          <h2 className="text-3xl sm:text-4xl font-black text-[#F1F0FF] mb-4">
-            Stop Leaving Money on the Shelf
-          </h2>
+            <h2 className="text-3xl sm:text-4xl font-black text-[#F1F0FF] mb-4">
+              Stop Leaving Money on the Shelf
+            </h2>
 
-          <p className="text-[rgba(241,240,255,0.55)] text-lg mb-8 max-w-md mx-auto leading-relaxed">
-            Every second you spend manually checking prices is profit lost.
-            Flip Engine X puts the data in your hands — instantly.
-          </p>
+            <p className="text-[rgba(241,240,255,0.55)] text-lg mb-8 max-w-md mx-auto leading-relaxed">
+              Every second you spend manually checking prices is profit lost.
+              Flip Engine X puts the data in your hands — instantly.
+            </p>
 
-          <div className="flex flex-col sm:flex-row gap-4 justify-center">
-            <a href="#pricing" className="cta-btn cta-btn-green">
-              Start 3-Day Free Trial
-              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
-                <path d="M5 12h14" /><path d="m12 5 7 7-7 7" />
-              </svg>
-            </a>
-          </div>
+            <div className="flex flex-col sm:flex-row gap-4 justify-center">
+              <button onClick={() => setShowWaitlist(true)} className="cta-btn cta-btn-green">
+                Reserve Early Access
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+                  <path d="M5 12h14" /><path d="m12 5 7 7-7 7" />
+                </svg>
+              </button>
+            </div>
 
-          <div className="mt-8 flex items-center justify-center gap-6 text-xs text-[rgba(241,240,255,0.35)] font-semibold">
-            <span className="flex items-center gap-2">
-              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#00ff80" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
-                <polyline points="20 6 9 17 4 12"/>
-              </svg>
-              3-day free trial
-            </span>
-            <span className="flex items-center gap-2">
-              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#00ff80" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
-                <polyline points="20 6 9 17 4 12"/>
-              </svg>
-              Works on any phone
-            </span>
-            <span className="flex items-center gap-2">
-              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#00ff80" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
-                <polyline points="20 6 9 17 4 12"/>
-              </svg>
-              PWA — no app store
-            </span>
+            <div className="mt-8 flex items-center justify-center gap-6 text-xs text-[rgba(241,240,255,0.35)] font-semibold">
+              <span className="flex items-center gap-2">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#00ff80" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+                  <polyline points="20 6 9 17 4 12"/>
+                </svg>
+                3-day free trial
+              </span>
+              <span className="flex items-center gap-2">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#00ff80" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+                  <polyline points="20 6 9 17 4 12"/>
+                </svg>
+                Works on any phone
+              </span>
+              <span className="flex items-center gap-2">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#00ff80" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+                  <polyline points="20 6 9 17 4 12"/>
+                </svg>
+                Founders badge included
+              </span>
+            </div>
           </div>
         </div>
-      </div>
-    </section>
+      </section>
+
+      <WaitlistModal
+        open={showWaitlist}
+        onClose={() => setShowWaitlist(false)}
+        onSuccess={handleSuccess}
+      />
+    </>
   );
 }

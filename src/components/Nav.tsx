@@ -31,7 +31,7 @@ export default function Nav() {
           <a href="#pricing" className="text-[rgba(241,240,255,0.55)] hover:text-[#C4B5FD] transition-colors">Pricing</a>
         </div>
         <a href="#pricing" className="cta-btn cta-btn-primary !py-2 !px-5 !text-xs">
-          Free Trial
+          Early Access
         </a>
       </div>
     </nav>

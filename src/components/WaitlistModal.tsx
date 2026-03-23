@@ -1,0 +1,184 @@
+"use client";
+
+import { useState } from "react";
+
+interface WaitlistModalProps {
+  open: boolean;
+  onClose: () => void;
+  onSuccess: () => void;
+}
+
+export default function WaitlistModal({ open, onClose, onSuccess }: WaitlistModalProps) {
+  const [name, setName] = useState("");
+  const [email, setEmail] = useState("");
+  const [status, setStatus] = useState<"idle" | "sending" | "sent" | "error">("idle");
+
+  if (!open) return null;
+
+  async function handleSubmit(e: React.FormEvent) {
+    e.preventDefault();
+    setStatus("sending");
+
+    try {
+      const res = await fetch("/api/waitlist", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ name: name.trim(), email: email.trim() }),
+      });
+
+      if (!res.ok) throw new Error("Failed");
+      setStatus("sent");
+      setTimeout(() => onSuccess(), 2000);
+    } catch {
+      setStatus("error");
+    }
+  }
+
+  return (
+    <div className="fixed inset-0 z-50 flex items-center justify-center px-4" onClick={onClose}>
+      <div className="absolute inset-0 bg-black/70 backdrop-blur-sm" />
+      <div
+        className="relative glass-card laser-border rounded-2xl p-8 w-full max-w-md fade-in-up"
+        onClick={(e) => e.stopPropagation()}
+      >
+        {/* Close button */}
+        <button
+          onClick={onClose}
+          className="absolute top-4 right-4 text-[rgba(241,240,255,0.3)] hover:text-[rgba(241,240,255,0.7)] transition-colors"
+        >
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+            <line x1="18" y1="6" x2="6" y2="18" /><line x1="6" y1="6" x2="18" y2="18" />
+          </svg>
+        </button>
+
+        {status === "sent" ? (
+          <div className="text-center py-6">
+            <div className="text-4xl mb-4">🎮</div>
+            <div className="font-pixel text-[10px] text-[#00ff80] glow-green tracking-widest mb-3">
+              YOU&apos;RE IN!
+            </div>
+            <h3 className="text-xl font-black text-[#F1F0FF] mb-2">
+              Spot Reserved
+            </h3>
+            <p className="text-sm text-[rgba(241,240,255,0.55)] mb-4">
+              We&apos;ll notify you when early access drops in April.
+              Founders get an exclusive achievement badge.
+            </p>
+            <div className="inline-block">
+              <FoundersBadgePreview />
+            </div>
+          </div>
+        ) : (
+          <>
+            <div className="text-center mb-6">
+              <div className="font-pixel text-[9px] text-[#FDE047] glow-yellow tracking-widest mb-3">
+                EARLY ACCESS
+              </div>
+              <h3 className="text-2xl font-black text-[#F1F0FF] mb-2">
+                Reserve Your Spot
+              </h3>
+              <p className="text-sm text-[rgba(241,240,255,0.55)] leading-relaxed">
+                Join the waitlist for exclusive early access in April.
+                Founders get a permanent achievement badge on their account.
+              </p>
+            </div>
+
+            <form onSubmit={handleSubmit} className="space-y-4">
+              <div>
+                <label className="block text-xs font-semibold text-[rgba(241,240,255,0.5)] mb-1.5 uppercase tracking-wider">
+                  Name
+                </label>
+                <input
+                  type="text"
+                  required
+                  value={name}
+                  onChange={(e) => setName(e.target.value)}
+                  placeholder="Your name"
+                  className="w-full px-4 py-3 rounded-xl text-sm text-[#F1F0FF] placeholder:text-[rgba(241,240,255,0.25)] outline-none transition-all focus:ring-2 focus:ring-[#8B5CF6]"
+                  style={{
+                    background: "rgba(255,255,255,0.05)",
+                    border: "1px solid rgba(139,92,246,0.2)",
+                  }}
+                />
+              </div>
+              <div>
+                <label className="block text-xs font-semibold text-[rgba(241,240,255,0.5)] mb-1.5 uppercase tracking-wider">
+                  Email
+                </label>
+                <input
+                  type="email"
+                  required
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
+                  placeholder="you@example.com"
+                  className="w-full px-4 py-3 rounded-xl text-sm text-[#F1F0FF] placeholder:text-[rgba(241,240,255,0.25)] outline-none transition-all focus:ring-2 focus:ring-[#8B5CF6]"
+                  style={{
+                    background: "rgba(255,255,255,0.05)",
+                    border: "1px solid rgba(139,92,246,0.2)",
+                  }}
+                />
+              </div>
+
+              {status === "error" && (
+                <p className="text-xs text-[#ef4444] text-center">
+                  Something went wrong. Try again or email us at{" "}
+                  <a href="mailto:info@flipenginex.com" className="underline">info@flipenginex.com</a>
+                </p>
+              )}
+
+              <button
+                type="submit"
+                disabled={status === "sending"}
+                className="cta-btn cta-btn-green w-full justify-center"
+                style={{ opacity: status === "sending" ? 0.6 : 1 }}
+              >
+                {status === "sending" ? (
+                  <>
+                    <svg className="animate-spin" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5">
+                      <path d="M12 2v4m0 12v4m-7.07-3.93 2.83-2.83m8.48-8.48 2.83-2.83M2 12h4m12 0h4m-3.93 7.07-2.83-2.83M7.76 7.76 4.93 4.93" />
+                    </svg>
+                    Reserving...
+                  </>
+                ) : (
+                  <>
+                    Reserve My Spot
+                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+                      <path d="M5 12h14" /><path d="m12 5 7 7-7 7" />
+                    </svg>
+                  </>
+                )}
+              </button>
+            </form>
+
+            <p className="text-[10px] text-[rgba(241,240,255,0.25)] text-center mt-4">
+              Start your free 3-day Starter trial after signing up.
+            </p>
+          </>
+        )}
+      </div>
+    </div>
+  );
+}
+
+/* Small inline preview of the Founders badge */
+function FoundersBadgePreview() {
+  return (
+    <div className="flex items-center gap-3 px-4 py-2 rounded-xl mt-2" style={{ background: "rgba(253,224,71,0.08)", border: "1px solid rgba(253,224,71,0.25)" }}>
+      <svg width="32" height="32" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg">
+        {/* Shield base */}
+        <path d="M16 2L4 8v8c0 7.18 5.12 13.4 12 14.93C22.88 29.4 28 23.18 28 16V8L16 2z" fill="rgba(253,224,71,0.15)" stroke="#FDE047" strokeWidth="1.5"/>
+        {/* Star */}
+        <path d="M16 8l2.35 4.76 5.25.77-3.8 3.7.9 5.23L16 19.98l-4.7 2.48.9-5.23-3.8-3.7 5.25-.77L16 8z" fill="#FDE047" stroke="#FDE047" strokeWidth="0.5"/>
+        {/* Pixel corners */}
+        <rect x="6" y="6" width="2" height="2" fill="#FDE047" opacity="0.6"/>
+        <rect x="24" y="6" width="2" height="2" fill="#FDE047" opacity="0.6"/>
+        <rect x="6" y="22" width="2" height="2" fill="#FDE047" opacity="0.4"/>
+        <rect x="24" y="22" width="2" height="2" fill="#FDE047" opacity="0.4"/>
+      </svg>
+      <div className="text-left">
+        <div className="font-pixel text-[7px] text-[#FDE047] glow-yellow tracking-wider">FOUNDER</div>
+        <div className="text-[10px] text-[rgba(241,240,255,0.5)]">Early Access Badge</div>
+      </div>
+    </div>
+  );
+}
