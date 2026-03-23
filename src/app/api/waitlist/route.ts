@@ -2,7 +2,7 @@ import { NextRequest, NextResponse } from "next/server";
 
 export async function POST(req: NextRequest) {
   try {
-    const { name, email } = await req.json();
+    const { name, email, plan } = await req.json();
 
     if (!name?.trim() || !email?.trim()) {
       return NextResponse.json({ error: "Name and email are required" }, { status: 400 });
@@ -17,6 +17,7 @@ export async function POST(req: NextRequest) {
         body: JSON.stringify({
           name: name.trim(),
           email: email.trim(),
+          plan: plan || "undecided",
           timestamp: new Date().toISOString(),
           source: "website",
         }),
@@ -27,7 +28,7 @@ export async function POST(req: NextRequest) {
       }
     } else {
       // Fallback: log to Vercel console (visible in Vercel logs)
-      console.log("[WAITLIST]", { name: name.trim(), email: email.trim(), timestamp: new Date().toISOString() });
+      console.log("[WAITLIST]", { name: name.trim(), email: email.trim(), plan: plan || "undecided", timestamp: new Date().toISOString() });
     }
 
     return NextResponse.json({ success: true });

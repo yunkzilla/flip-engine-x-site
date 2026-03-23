@@ -101,6 +101,12 @@ const plans = [
 export default function Pricing() {
   const [annual, setAnnual] = useState(false);
   const [showWaitlist, setShowWaitlist] = useState(false);
+  const [waitlistPlan, setWaitlistPlan] = useState("undecided");
+
+  function openWaitlist(plan: string) {
+    setWaitlistPlan(plan);
+    setShowWaitlist(true);
+  }
 
   function handleWaitlistSuccess() {
     setShowWaitlist(false);
@@ -223,7 +229,8 @@ export default function Pricing() {
                 </ul>
 
                 {p.locked ? (
-                  <div
+                  <button
+                    onClick={() => openWaitlist(p.tier)}
                     className={p.ctaClass}
                     style={{
                       background: "rgba(139,92,246,0.08)",
@@ -235,10 +242,10 @@ export default function Pricing() {
                       <rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/>
                     </svg>
                     {p.cta}
-                  </div>
+                  </button>
                 ) : (
                   <button
-                    onClick={() => setShowWaitlist(true)}
+                    onClick={() => openWaitlist(p.tier)}
                     className={p.ctaClass}
                   >
                     {p.cta}
@@ -260,7 +267,7 @@ export default function Pricing() {
               Want Pro, Elite, or Enterprise? Join the early access list and be the first to know.
             </p>
             <button
-              onClick={() => setShowWaitlist(true)}
+              onClick={() => openWaitlist("undecided")}
               className="cta-btn cta-btn-primary"
             >
               Join Early Access Waitlist
@@ -276,6 +283,7 @@ export default function Pricing() {
         open={showWaitlist}
         onClose={() => setShowWaitlist(false)}
         onSuccess={handleWaitlistSuccess}
+        initialPlan={waitlistPlan}
       />
     </>
   );

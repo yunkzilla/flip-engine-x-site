@@ -3,7 +3,7 @@
  *
  * SETUP:
  * 1. Create a new Google Sheet (name it "Flip Engine X Waitlist")
- * 2. Add headers in row 1: Name | Email | Timestamp | Source
+ * 2. Add headers in row 1: Name | Email | Plan | Timestamp | Source
  * 3. Go to Extensions → Apps Script
  * 4. Paste this entire script and save
  * 5. Click Deploy → New deployment
@@ -22,6 +22,7 @@ function doPost(e) {
     sheet.appendRow([
       data.name || "",
       data.email || "",
+      data.plan || "undecided",
       data.timestamp || new Date().toISOString(),
       data.source || "unknown",
     ]);

@@ -2,15 +2,25 @@
 
 import { useState } from "react";
 
+const PLAN_OPTIONS = [
+  { value: "starter", label: "Starter — $19.99/mo" },
+  { value: "pro", label: "Pro — $49.99/mo" },
+  { value: "elite", label: "Elite — $99.99/mo" },
+  { value: "enterprise", label: "Enterprise — $199.99/mo" },
+  { value: "undecided", label: "Not sure yet" },
+];
+
 interface WaitlistModalProps {
   open: boolean;
   onClose: () => void;
   onSuccess: () => void;
+  initialPlan?: string;
 }
 
-export default function WaitlistModal({ open, onClose, onSuccess }: WaitlistModalProps) {
+export default function WaitlistModal({ open, onClose, onSuccess, initialPlan = "undecided" }: WaitlistModalProps) {
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
+  const [plan, setPlan] = useState(initialPlan);
   const [status, setStatus] = useState<"idle" | "sending" | "sent" | "error">("idle");
 
   if (!open) return null;
@@ -23,7 +33,7 @@ export default function WaitlistModal({ open, onClose, onSuccess }: WaitlistModa
       const res = await fetch("/api/waitlist", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ name: name.trim(), email: email.trim() }),
+        body: JSON.stringify({ name: name.trim(), email: email.trim(), plan }),
       });
 
       if (!res.ok) throw new Error("Failed");
@@ -117,6 +127,30 @@ export default function WaitlistModal({ open, onClose, onSuccess }: WaitlistModa
                     border: "1px solid rgba(139,92,246,0.2)",
                   }}
                 />
+              </div>
+
+              <div>
+                <label className="block text-xs font-semibold text-[rgba(241,240,255,0.5)] mb-1.5 uppercase tracking-wider">
+                  Interested Plan
+                </label>
+                <select
+                  value={plan}
+                  onChange={(e) => setPlan(e.target.value)}
+                  className="w-full px-4 py-3 rounded-xl text-sm text-[#F1F0FF] outline-none transition-all focus:ring-2 focus:ring-[#8B5CF6] appearance-none"
+                  style={{
+                    background: "rgba(255,255,255,0.05)",
+                    border: "1px solid rgba(139,92,246,0.2)",
+                    backgroundImage: `url("data:image/svg+xml,%3Csvg width='12' height='8' viewBox='0 0 12 8' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M1 1.5L6 6.5L11 1.5' stroke='rgba(241,240,255,0.4)' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E")`,
+                    backgroundRepeat: "no-repeat",
+                    backgroundPosition: "right 16px center",
+                  }}
+                >
+                  {PLAN_OPTIONS.map((opt) => (
+                    <option key={opt.value} value={opt.value} style={{ background: "#0C0A1A", color: "#F1F0FF" }}>
+                      {opt.label}
+                    </option>
+                  ))}
+                </select>
               </div>
 
               {status === "error" && (
