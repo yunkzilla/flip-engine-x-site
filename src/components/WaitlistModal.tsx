@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from "react";
 
-const APP_LOGIN_URL = "https://app.flipenginex.com/login?returnTo=%2Fplans%3Fplan%3Dstarter%26billing%3Dmonthly";
+const APP_LOGIN_URL = "https://app.flipenginex.com/login?returnTo=%2Fplans";
 
 const PLAN_OPTIONS = [
   { value: "starter", label: "Starter — $19.99/mo" },
