@@ -8,6 +8,7 @@ import Pricing from "@/components/Pricing";
 import AppDemo from "@/components/AppDemo";
 import TeamInfo from "@/components/TeamInfo";
 import Cta from "@/components/Cta";
+import Faq from "@/components/Faq";
 import Nav from "@/components/Nav";
 import Footer from "@/components/Footer";
 
@@ -44,6 +45,7 @@ export default function Page() {
         <HowItWorks />
         <Pricing />
         <TeamInfo />
+        <Faq />
         <Cta />
       </div>
       <Footer />
