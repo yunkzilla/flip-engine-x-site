@@ -17,7 +17,7 @@ const plans = [
       "Profit calculator with fee breakdown",
       "25 scans per block (3 min cooldown)",
       "Up to 3 triggers",
-      "Market prices & Bookrun",
+      "Market prices",
     ],
     missing: ["Batches", "SP-API", "Inventory Sync", "Gating Checks", "Repricer"],
     cta: "Start 3-Day Trial",
