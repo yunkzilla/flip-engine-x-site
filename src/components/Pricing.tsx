@@ -9,7 +9,7 @@ const plans = [
     tier: "starter",
     monthly: "$19.99",
     annual: "$14.99",
-    desc: "Get scanning with core features and solid limits.",
+    desc: "Available now — 3-day free trial, then $19.99/mo. The only plan during early access.",
     features: [
       "Camera barcode scanner",
       "Bluetooth scanner support",
@@ -117,7 +117,7 @@ export default function Pricing() {
               Pick Your <span className="text-[#8B5CF6]">Level</span>
             </h2>
             <p className="max-w-lg mx-auto text-[rgba(241,240,255,0.55)] text-lg mb-8">
-              Start with a 3-day free trial. More plans launching in April.
+              Early access is here — start with a 3-day free trial on Starter, then $19.99/mo. Pro, Elite, and Enterprise launch in April.
             </p>
 
             {/* Billing toggle */}
@@ -254,7 +254,7 @@ export default function Pricing() {
           {/* Waitlist CTA below pricing cards */}
           <div className="text-center mt-10" data-animate>
             <p className="text-sm text-[rgba(241,240,255,0.45)] mb-4">
-              Want Pro, Elite, or Enterprise? Join the early access list and be the first to know.
+              Interested in Pro, Elite, or Enterprise? Join the waitlist to be notified when they launch in April.
             </p>
             <button
               onClick={() => openWaitlist("undecided")}
