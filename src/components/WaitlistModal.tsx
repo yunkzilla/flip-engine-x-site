@@ -252,68 +252,43 @@ export default function WaitlistModal({ open, onClose, initialPlan = "undecided"
 function TrialCTAs({ platform }: { platform: Platform }) {
   const isMobile = platform === "ios" || platform === "android";
 
-  const installLabel = platform === "ios"
-    ? "Install App — Add to Home Screen"
-    : platform === "android"
-      ? "Install App — Add to Home Screen"
-      : platform === "mac"
-        ? "Install App — Mac (Chrome)"
-        : platform === "windows"
-          ? "Install App — Windows (Chrome/Edge)"
-          : "Install App (PWA)";
-
   const installHint = platform === "ios"
-    ? "Open in Safari, tap the share button ↑ then \"Add to Home Screen\""
+    ? "Tap the share button ↑ then \"Add to Home Screen\" to install the app."
     : platform === "android"
-      ? "Open in Chrome, tap ⋮ menu → \"Install app\" or \"Add to Home Screen\""
+      ? "Tap the ⋮ menu → \"Install app\" to add it to your home screen."
       : platform === "mac"
-        ? "Open in Chrome, click the install icon in the address bar"
+        ? "In Chrome, click the install icon ⊕ in the address bar to install."
         : platform === "windows"
-          ? "Open in Chrome or Edge, click the install icon in the address bar"
-          : "Open in Chrome and install from the address bar";
+          ? "In Chrome or Edge, click the install icon ⊕ in the address bar."
+          : "Use Chrome and click the install icon in the address bar to install.";
 
   return (
     <>
       <div className="font-pixel text-[8px] text-[rgba(241,240,255,0.4)] tracking-widest mb-3">
-        START YOUR FREE TRIAL NOW
+        START YOUR FREE TRIAL
       </div>
-      <div className="flex flex-col gap-3">
-        <a
-          href={APP_LOGIN_URL}
-          target="_blank"
-          rel="noopener noreferrer"
-          className="cta-btn cta-btn-green w-full justify-center"
-        >
-          {isMobile ? (
-            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
-              <rect x="5" y="2" width="14" height="20" rx="2" ry="2"/><line x1="12" y1="18" x2="12.01" y2="18"/>
-            </svg>
-          ) : (
-            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
-              <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/>
-            </svg>
-          )}
-          {installLabel}
-        </a>
-        <a
-          href={APP_LOGIN_URL}
-          target="_blank"
-          rel="noopener noreferrer"
-          className="cta-btn cta-btn-primary w-full justify-center"
-        >
-          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
-            {isMobile ? (
-              <><rect x="5" y="2" width="14" height="20" rx="2" ry="2"/><line x1="12" y1="18" x2="12.01" y2="18"/></>
-            ) : (
-              <><rect x="2" y="3" width="20" height="14" rx="2" ry="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></>
-            )}
-          </svg>
-          Use in Browser
-        </a>
-      </div>
-      <p className="text-[10px] text-[rgba(241,240,255,0.25)] mt-3 leading-relaxed">
-        {installHint}
+      <a
+        href={APP_LOGIN_URL}
+        target="_blank"
+        rel="noopener noreferrer"
+        className="cta-btn cta-btn-green w-full justify-center"
+      >
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round">
+          <path d="M5 12h14" /><path d="m12 5 7 7-7 7" />
+        </svg>
+        {isMobile ? "Open App" : "Open App in Browser"}
+      </a>
+      <p className="text-[11px] text-[rgba(241,240,255,0.35)] mt-3 leading-relaxed">
+        Don&apos;t have an account? You can create one on the next screen.
       </p>
+      <div className="mt-3 px-4 py-3 rounded-xl text-left" style={{ background: "rgba(139,92,246,0.08)", border: "1px solid rgba(139,92,246,0.2)" }}>
+        <div className="font-pixel text-[7px] text-[#C4B5FD] tracking-wider mb-1.5">
+          {isMobile ? "INSTALL AS APP" : platform === "mac" ? "INSTALL ON MAC" : platform === "windows" ? "INSTALL ON WINDOWS" : "INSTALL AS APP"}
+        </div>
+        <p className="text-[11px] text-[rgba(241,240,255,0.45)] leading-relaxed">
+          {installHint}
+        </p>
+      </div>
     </>
   );
 }
