@@ -257,10 +257,10 @@ function TrialCTAs({ platform }: { platform: Platform }) {
     : platform === "android"
       ? "Tap the ⋮ menu → \"Install app\" to add it to your home screen."
       : platform === "mac"
-        ? "In Chrome, click the install icon ⊕ in the address bar to install."
+        ? "In Chrome: ⋮ menu → Cast, save, and share → Install page as app."
         : platform === "windows"
-          ? "In Chrome or Edge, click the install icon ⊕ in the address bar."
-          : "Use Chrome and click the install icon in the address bar to install.";
+          ? "In Chrome or Edge: ⋮ menu → Cast, save, and share → Install page as app."
+          : "In Chrome: ⋮ menu → Cast, save, and share → Install page as app.";
 
   return (
     <>
