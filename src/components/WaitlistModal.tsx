@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 
 const PLAN_OPTIONS = [
   { value: "starter", label: "Starter — $19.99/mo" },
@@ -21,6 +21,15 @@ export default function WaitlistModal({ open, onClose, initialPlan = "undecided"
   const [email, setEmail] = useState("");
   const [plan, setPlan] = useState(initialPlan);
   const [status, setStatus] = useState<"idle" | "sending" | "sent" | "error">("idle");
+
+  useEffect(() => {
+    if (open) {
+      setPlan(initialPlan);
+      setStatus("idle");
+      setName("");
+      setEmail("");
+    }
+  }, [open, initialPlan]);
 
   if (!open) return null;
 
