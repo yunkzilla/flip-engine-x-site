@@ -42,8 +42,8 @@ const teamFeatures = [
 ];
 
 const seatTable = [
-  { plan: "Starter", included: "—", addon: "$15/mo each", color: "#00ff80", active: true },
-  { plan: "Pro", included: "—", addon: "$35/mo each", color: "#8B5CF6", active: true },
+  { plan: "Starter", included: "—", addon: "$10/mo each", color: "#00ff80", active: true },
+  { plan: "Pro", included: "—", addon: "$25/mo each", color: "#8B5CF6", active: true },
   { plan: "Elite", included: "1", addon: "$35/mo each", color: "#22D3EE", active: true },
   { plan: "Enterprise", included: "5", addon: "$35/mo each", color: "#C4B5FD", active: true },
 ];
@@ -145,7 +145,7 @@ export default function TeamInfo() {
                     <div>
                       <div className="font-bold text-[#F1F0FF] text-base">Team Account</div>
                       <div className="flex items-baseline gap-1.5 mt-0.5">
-                        <span className="text-lg font-black text-[#C4B5FD]">From $15</span>
+                        <span className="text-lg font-black text-[#C4B5FD]">From $10</span>
                         <span className="text-xs text-[rgba(241,240,255,0.4)] font-semibold">/mo per seat</span>
                       </div>
                     </div>

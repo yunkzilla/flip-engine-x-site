@@ -17,7 +17,7 @@ const faqs = [
   },
   {
     q: "How much does Flip Engine X cost?",
-    a: "Flip Engine X starts at $19.99/month for the Starter plan with a 3-day free trial. Pro ($49.99/mo), Elite ($99.99/mo), and Enterprise ($199.99/mo) plans launch in April 2025 with additional features like unlimited scans, repricer, multi-marketplace support, and team accounts. Annual billing saves 20%.",
+    a: "Flip Engine X starts at $9.99/month for the Starter plan with a 3-day free trial. Pro ($29.99/mo), Elite ($79.99/mo), and Enterprise ($199.99/mo) plans launch in April 2025 with additional features like unlimited scans, repricer, multi-marketplace support, and team accounts. Annual billing saves 20%.",
   },
   {
     q: "What is Intrinsic Value and why does it matter?",

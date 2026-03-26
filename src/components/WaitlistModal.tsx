@@ -5,9 +5,9 @@ import { useState, useEffect } from "react";
 const APP_LOGIN_URL = "https://app.flipenginex.com/login?returnTo=%2Fplans";
 
 const PLAN_OPTIONS = [
-  { value: "starter", label: "Starter — $19.99/mo" },
-  { value: "pro", label: "Pro — $49.99/mo" },
-  { value: "elite", label: "Elite — $99.99/mo" },
+  { value: "starter", label: "Starter — $9.99/mo" },
+  { value: "pro", label: "Pro — $29.99/mo" },
+  { value: "elite", label: "Elite — $79.99/mo" },
   { value: "enterprise", label: "Enterprise — $199.99/mo" },
   { value: "undecided", label: "Not sure yet" },
 ];

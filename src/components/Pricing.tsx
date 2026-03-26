@@ -7,9 +7,9 @@ const plans = [
   {
     name: "STARTER",
     tier: "starter",
-    monthly: "$19.99",
-    annual: "$14.99",
-    desc: "Available now — 3-day free trial, then $19.99/mo. The only plan during early access.",
+    monthly: "$9.99",
+    annual: "$7.99",
+    desc: "Available now — 3-day free trial, then $9.99/mo. The only plan during early access.",
     features: [
       "Camera barcode scanner",
       "Bluetooth scanner support",
@@ -30,8 +30,8 @@ const plans = [
   {
     name: "PRO",
     tier: "pro",
-    monthly: "$49.99",
-    annual: "$39.99",
+    monthly: "$29.99",
+    annual: "$23.99",
     desc: "Full power for serious resellers.",
     features: [
       "Everything in Starter",
@@ -53,8 +53,8 @@ const plans = [
   {
     name: "ELITE",
     tier: "elite",
-    monthly: "$99.99",
-    annual: "$79.99",
+    monthly: "$79.99",
+    annual: "$63.99",
     desc: "Unlimited scans and full automation.",
     features: [
       "Everything in Pro",
@@ -117,7 +117,7 @@ export default function Pricing() {
               Pick Your <span className="text-[#8B5CF6]">Level</span>
             </h2>
             <p className="max-w-lg mx-auto text-[rgba(241,240,255,0.55)] text-lg mb-8">
-              Early access is here — start with a 3-day free trial on Starter, then $19.99/mo. Pro, Elite, and Enterprise launch in April.
+              Early access is here — start with a 3-day free trial on Starter, then $9.99/mo. Pro, Elite, and Enterprise launch in April.
             </p>
 
             {/* Billing toggle */}

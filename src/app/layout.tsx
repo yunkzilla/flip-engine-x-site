@@ -114,7 +114,7 @@ const schemas = [
       "@type": "Offer",
       price: "0",
       priceCurrency: "USD",
-      description: "3-day free trial, then $19.99/month. Pro plans launching April 2025.",
+      description: "3-day free trial, then $9.99/month. Pro plans launching April 2025.",
     },
   },
   // Organization schema
@@ -150,7 +150,7 @@ const schemas = [
       {
         "@type": "Question",
         name: "How much does Flip Engine X cost?",
-        acceptedAnswer: { "@type": "Answer", text: "Flip Engine X starts at $19.99/month for the Starter plan with a 3-day free trial. Pro ($49.99/mo), Elite ($99.99/mo), and Enterprise ($199.99/mo) plans launch in April 2025. Annual billing saves 20%." },
+        acceptedAnswer: { "@type": "Answer", text: "Flip Engine X starts at $9.99/month for the Starter plan with a 3-day free trial. Pro ($29.99/mo), Elite ($79.99/mo), and Enterprise ($199.99/mo) plans launch in April 2025. Annual billing saves 20%." },
       },
       {
         "@type": "Question",
